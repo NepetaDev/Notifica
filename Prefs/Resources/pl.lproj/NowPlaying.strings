@@ -1,0 +1,20 @@
+{
+  "BACKGROUND_COLOR" = "Kolor tła";
+  "HEADER_TEXT_COLOR" = "Kolor tekstu nagłówka";
+  "CORNER_RADIUS" = "Promień zaokrąglenia rogów";
+
+  "HIDE_ICON" = "Hide icon";
+  "HIDE_APP_NAME" = "Hide app name";
+  "HIDE_HEADER_BACKGROUND" = "Hide header background";
+
+  "DEFAULT" = "Domyślny";
+  "DYNAMIC" = "Dynamiczny";
+  "CUSTOM" = "Własny";
+  "CUSTOM_COLOR" = "Własny kolor";
+
+  "BACKGROUND_BLUR_MODE" = "Tryb rozmycia tła";
+  "DARK" = "Czarny";
+  "LIGHT" = "Jasny";
+  "BACKGROUND_BLUR_OPACITY" = "Przeźroczystość rozmycia tła";
+  "BACKGROUND_BLUR_COLOR_OPACITY" = "Alpha koloru rozmycia tła";
+}

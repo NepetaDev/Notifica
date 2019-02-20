@@ -1,0 +1,24 @@
+{
+  "ENABLED" = "Włączony";
+  "SETTINGS" = "Ustawienia";
+
+  "PRESET" = "Preset";
+  "NOTIFICATION_CENTER" = "Centrum powiadomień";
+  "NOTIFICATIONS" = "Powiadomienia";
+  "BANNERS" = "Banery";
+  "WIDGETS" = "Widgety";
+  "DETAILS" = "Szczegóły";
+  "NOW_PLAYING" = "Odtwarzacz";
+
+  "RESPRING" = "Respring";
+  "RESRPING_NEEDED" = "MUSISZ ZROBIĆ RESPRING PO ZMIANACH USTAWIEŃ.";
+  "ARE_YOU_SURE_TO_RESET_PREFS" = "Na pewno chcesz zresetować wszytkie ustawienia? Ta akcja jest nieodwracalna.";
+  "OK" = "OK";
+  "CANCEL" = "Anuluj";
+  "RESET_PREFS" = "Przywróć ustawienia domyślne i wykonaj respring";
+  "SOURCE_CODE" = "Kod źródłowy";
+  "DONATE_TO_NEPETA" = "Wspomóź Nepeta";
+  "SUPPORT_ME" = "Wspomóź mnie!";
+  "TEST_NOTIFICATIONS" = "Test powiadomień";
+  "TEST_BANNER" = "Test banerów";
+}
