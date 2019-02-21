@@ -58,8 +58,9 @@
 }
 
 - (void)respring:(id)sender {
-	pid_t pid;
-    const char* args[] = {"killall", "backboardd", NULL};
-    posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char* const*)args, NULL);
+    NSTask *t = [[[NSTask alloc] init] autorelease];
+    [t setLaunchPath:@"/usr/bin/killall"];
+    [t setArguments:[NSArray arrayWithObjects:@"backboardd", nil]];
+    [t launch];
 }
 @end

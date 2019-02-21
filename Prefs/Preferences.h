@@ -3,7 +3,7 @@
 #import <CepheiPrefs/HBRootListController.h>
 #import <CepheiPrefs/HBAppearanceSettings.h>
 #import <Cephei/HBPreferences.h>
-#import <spawn.h>
+#import "NSTask.h"
 
 @interface NTFPrefsListController : HBRootListController
     @property (nonatomic, retain) UIBarButtonItem *respringButton;
