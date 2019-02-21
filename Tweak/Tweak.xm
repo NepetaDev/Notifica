@@ -42,6 +42,8 @@ void ntfMoveUpBy(int y, UIView *view) {
 }
 
 UIButton* ntfGetIconButtonFromHCV(MTPlatterHeaderContentView* hcv) {
+    if (!hcv) return nil;
+
     if ([hcv respondsToSelector:@selector(iconButton)]) {
         return (UIButton *)[hcv iconButton];
     } else if ([hcv respondsToSelector:@selector(iconButtons)]) {
@@ -354,11 +356,14 @@ void NTFTestBanner() {
 
 -(void)setIcon:(UIImage *)arg1 {
     %orig;
+    if (![self listItem]) return;
+    if (!arg1) return;
     [self ntfColorize];
 }
 
 -(void)layoutSubviews{
     %orig;
+    if (![self listItem]) return;
 
     NTFConfig *config = [self ntfConfig];
     if (!config || ![config enabled]) {
@@ -488,6 +493,7 @@ void NTFTestBanner() {
         }
     }
 
+    if (!self.backgroundMaterialView) return;
     self.backgroundMaterialView.hidden = NO;
     [self.backgroundMaterialView ntfSetCornerRadius:[config cornerRadius]];
     UIView *view = MSHookIvar<UIView *>(self.backgroundMaterialView, "_backdropView");
@@ -547,6 +553,7 @@ void NTFTestBanner() {
 
 -(void)setIcon:(UIImage *)arg1 {
     %orig;
+    if (!arg1) return;
     [self ntfColorize];
 }
 
@@ -678,6 +685,7 @@ void NTFTestBanner() {
 
 -(void)setIcon:(UIImage *)arg1 {
     %orig;
+    if (!arg1) return;
     [self ntfColorize];
 }
 
@@ -838,6 +846,7 @@ void NTFTestBanner() {
         }
     }
 
+    if (!self.backgroundMaterialView) return;
     [self.backgroundMaterialView ntfSetCornerRadius:[config cornerRadius]];
     UIView *view = MSHookIvar<UIView *>(self.backgroundMaterialView, "_backdropView");
     view.alpha = [config backgroundBlurAlpha];
