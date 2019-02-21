@@ -262,8 +262,12 @@ void NTFTestBanner() {
                     UIView *view = MSHookIvar<UIView *>(subsubview, "_backdropView");
                     view.alpha = [config backgroundBlurAlpha];
 
-                    if ([config dynamicBackgroundColor]) {
-                        [((MTMaterialView *)subsubview) ntfColorize:self.contentView.ntfDynamicColor withBlurColor:[config blurColor]];
+                    if ([config colorizeBackground]) {
+                        if ([config dynamicBackgroundColor]) {
+                            [((MTMaterialView *)subsubview) ntfColorize:self.contentView.ntfDynamicColor withBlurColor:[config blurColor]];
+                        } else {
+                            [((MTMaterialView *)subsubview) ntfColorize:[config backgroundColor] withBlurColor:[config blurColor]];
+                        }
                     }
 
                     if ([config backgroundGradient]) {
@@ -707,8 +711,11 @@ void NTFTestBanner() {
     for (UIView *subview in self.subviews) {
         if ([subview isKindOfClass:%c(MTMaterialView)]) {
             subview.layer.cornerRadius = [config cornerRadius];
+            subview.hidden = YES;
         }
     }
+
+    self.backgroundMaterialView.hidden = NO;
 
     if ([config centerText]) {
         ((UITextView *)[[self _notificationContentView] _secondaryTextView]).textAlignment = NSTextAlignmentCenter;
