@@ -23,3 +23,10 @@ ADDITIONAL_OBJCFLAGS = -fobjc-arc
 endif
 
 include $(THEOS_MAKE_PATH)/tweak.mk
+
+after-all::
+ifeq ($(SIMULATOR),1)
+	rm /opt/simject/Notifica.dylib
+	cp .theos/obj/iphone_simulator/debug/x86_64/Notifica.dylib /opt/simject/
+	~/simject/bin/respring_simulator
+endif
