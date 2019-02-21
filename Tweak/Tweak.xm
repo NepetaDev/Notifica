@@ -126,22 +126,29 @@ void NTFTestBanner() {
 
         if (backdropView.colorTintView) {
             backdropView.colorTintView.backgroundColor = color;
-            /*if (self.ntfGradientLayer) {
-                [self.ntfGradientLayer removeFromSuperlayer];
-            }
-
-            self.ntfGradientLayer = [CAGradientLayer layer];
-
-            self.ntfGradientLayer.frame = backdropView.colorTintView.bounds;
-            self.ntfGradientLayer.colors = @[(id)color, (id)[UIColor whiteColor].CGColor];
-
-            [backdropView.colorTintView.layer insertSublayer:self.ntfGradientLayer atIndex:0];*/
         }
 
         if (backdropView.grayscaleTintView && bgColor) {
             backdropView.grayscaleTintView.backgroundColor = bgColor;
         }
     }
+}
+
+%new
+-(void)ntfGradient:(UIColor *)color {
+    UIView *view = MSHookIvar<UIView *>(self, "_backdropView");
+    if (self.ntfGradientLayer) {
+        [self.ntfGradientLayer removeFromSuperlayer];
+    }
+
+    self.ntfGradientLayer = [CAGradientLayer layer];
+
+    self.ntfGradientLayer.frame = view.bounds;
+    self.ntfGradientLayer.startPoint = CGPointMake(0.0, 0.5);
+    self.ntfGradientLayer.endPoint = CGPointMake(1.0, 0.5);
+    self.ntfGradientLayer.colors = @[(id)[UIColor clearColor].CGColor, (id)color.CGColor];
+
+    [view.layer insertSublayer:self.ntfGradientLayer atIndex:[view.layer.sublayers count]];
 }
 
 %new
@@ -255,6 +262,10 @@ void NTFTestBanner() {
 
                     if ([config dynamicBackgroundColor]) {
                         [((MTMaterialView *)subsubview) ntfColorize:self.contentView.ntfDynamicColor withBlurColor:[config blurColor]];
+                    }
+
+                    if ([config backgroundGradient]) {
+                        [((MTMaterialView *)subsubview) ntfGradient:[config backgroundGradientColor]];
                     }
                 }
             }
@@ -487,6 +498,10 @@ void NTFTestBanner() {
         } else {
             [self.backgroundMaterialView ntfColorize:[config backgroundColor] withBlurColor:[config blurColor]];
         }
+    }
+
+    if ([config backgroundGradient]) {
+        [self.backgroundMaterialView ntfGradient:[config backgroundGradientColor]];
     }
 
     if ([config colorizeHeader]) {
@@ -832,6 +847,10 @@ void NTFTestBanner() {
         } else {
             [self.backgroundMaterialView ntfColorize:[config backgroundColor] withBlurColor:[config blurColor]];
         }
+    }
+
+    if ([config backgroundGradient]) {
+        [self.backgroundMaterialView ntfGradient:[config backgroundGradientColor]];
     }
 
     if ([config colorizeHeader]) {

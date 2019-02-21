@@ -20,4 +20,6 @@
 	"MODERN" = "现代";
 	"NOTIFICATION_OPACITY" = "通知透明度";
 	"STYLE" = "风格";
+	"GRADIENT" = "渐变";
+	"SECONDARY_COLOR" = "次要颜色";
 }

@@ -8,6 +8,7 @@
 @property (nonatomic,assign) bool enabled;
 
 @property (nonatomic,retain) UIColor *backgroundColor;
+@property (nonatomic,retain) UIColor *backgroundGradientColor;
 @property (nonatomic,retain) UIColor *blurColor;
 @property (nonatomic,retain) UIColor *contentColor;
 @property (nonatomic,retain) UIColor *headerColor;
@@ -19,6 +20,8 @@
 @property (nonatomic,assign) bool colorizeHeader;
 @property (nonatomic,assign) bool colorizeBackground;
 @property (nonatomic,assign) bool colorizeContent;
+
+@property (nonatomic,assign) bool backgroundGradient;
 
 @property (nonatomic,assign) bool hideIcon;
 @property (nonatomic,assign) bool hideAppName;

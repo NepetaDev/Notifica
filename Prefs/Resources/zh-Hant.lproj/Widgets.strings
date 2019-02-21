@@ -17,4 +17,6 @@
 	"MINIMALIST" = "極簡主義";
 	"MODERN" = "現代";
 	"STYLE" = "風格";
+	"GRADIENT" = "渐变";
+	"SECONDARY_COLOR" = "次要颜色";
 }

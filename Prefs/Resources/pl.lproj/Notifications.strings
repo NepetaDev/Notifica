@@ -18,6 +18,9 @@
   "CUSTOM" = "Własny";
   "CUSTOM_COLOR" = "Własny kolor";
 
+  "GRADIENT" = "Gradient";
+  "SECONDARY_COLOR" = "Kolor przejścia";
+
   "BACKGROUND_BLUR_MODE" = "Tryb rozmycia tła";
   "DARK" = "Czarny";
   "LIGHT" = "Jasny";

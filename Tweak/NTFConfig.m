@@ -58,10 +58,12 @@
 
     #ifndef SIMULATOR
     self.backgroundColor = LCPParseColorString([dict objectForKey:@"CustomBackgroundColor"], @"#000000:1.0");
+    self.backgroundGradientColor = LCPParseColorString([dict objectForKey:@"BackgroundGradientColor"], @"#ffffff:1.0");
     self.headerColor = LCPParseColorString([dict objectForKey:@"CustomHeaderTextColor"], @"#ffffff:1.0");
     self.contentColor = LCPParseColorString([dict objectForKey:@"CustomContentTextColor"], @"#ffffff:1.0");
     #else
     self.backgroundColor = [UIColor blackColor];
+    self.backgroundGradientColor = [UIColor whiteColor];
     self.headerColor = [UIColor blackColor];
     self.contentColor = [UIColor blackColor];
     #endif
@@ -75,6 +77,8 @@
     } else if (_backgroundBlurMode == 2) {
         self.blurColor = [[UIColor blackColor] colorWithAlphaComponent:self.backgroundBlurColorAlpha];
     }
+
+    self.backgroundGradient = [([dict objectForKey:@"BackgroundGradient"] ?: @(NO)) boolValue];
 
     return self;
 }
