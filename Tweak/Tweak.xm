@@ -448,6 +448,11 @@ void NTFTestBanner() {
     [headerContentView setTintColor:color];
     [[headerContentView _dateLabel] setTextColor:color];
     [[headerContentView _titleLabel] setTextColor:color];
+
+    if ([self showMoreButton]) {
+        [[[[self showMoreButton] titleLabel] layer] setFilters:nil];
+        [[self showMoreButton] setTitleColor:color forState:UIControlStateNormal];
+    }
 }
 
 %new
