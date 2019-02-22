@@ -348,6 +348,79 @@ void NTFTestBanner() {
 
 %end
 
+%hook NCNotificationListCoalescingHeaderCell
+
+%new;
+-(void)ntfColorizeHeader:(UIColor *)color {
+    [self.headerTitleView.titleLabel legibilitySettings].primaryColor = color;
+    [self.headerTitleView.titleLabel _updateLabelForLegibilitySettings];
+    [self.headerTitleView.titleLabel _updateLegibilityView];
+}
+
+%new;
+-(void)ntfColorizeContent:(UIColor *)color {
+    for (NCToggleControl *control in [self.coalescingControlsView.toggleControlPair toggleControls]) {
+        [[control _titleLabel].layer setFilters:nil];
+        [[control _titleLabel] setTextColor:color];
+
+        [[control _glyphView].layer setFilters:nil];
+        [[control _glyphView] setTintColor:color];
+    }
+}
+
+%new;
+-(void)ntfColorizeBackground:(UIColor *)color {
+    for (NCToggleControl *control in [self.coalescingControlsView.toggleControlPair toggleControls]) {
+        [[control _backgroundMaterialView] ntfColorize:color withBlurColor:[configNotifications blurColor]];
+    }
+}
+
+%end
+
+%hook NCNotificationListCollectionView
+
+-(void)layoutSubviews {
+    %orig;
+    if (![configNC colorizeSection]) return;
+
+    NCNotificationListCoalescingHeaderCell *cell = nil;
+    for (UIView *view in [self subviews]) {
+        if ([view isKindOfClass:%c(NCNotificationListCoalescingHeaderCell)]) {
+            cell = (NCNotificationListCoalescingHeaderCell *)view;
+            
+            if ([configNotifications colorizeBackground] && ![configNotifications dynamicBackgroundColor]) {
+                [cell ntfColorizeBackground:[configNotifications backgroundColor]];
+            }
+
+            if ([configNotifications colorizeHeader] && ![configNotifications dynamicHeaderColor]) {
+                [cell ntfColorizeHeader:[configNotifications headerColor]];
+            }
+
+            if ([configNotifications colorizeContent] && ![configNotifications dynamicContentColor]) {
+                [cell ntfColorizeContent:[configNotifications contentColor]];
+            }
+        } else if (cell && [view isKindOfClass:%c(NCNotificationListCell)]) {
+            UIColor *dynamicColor = ((NCNotificationListCell *)view).contentViewController.view.contentView.ntfDynamicColor;
+
+            if ([configNotifications colorizeBackground] && [configNotifications dynamicBackgroundColor]) {
+                [cell ntfColorizeBackground:dynamicColor];
+            }
+
+            if ([configNotifications colorizeHeader] && [configNotifications dynamicHeaderColor]) {
+                [cell ntfColorizeHeader:dynamicColor];
+            }
+
+            if ([configNotifications colorizeContent] && [configNotifications dynamicContentColor]) {
+                [cell ntfColorizeContent:dynamicColor];
+            }
+
+            cell = nil;
+        }
+    }
+}
+
+%end
+
 %end
 
 /* -- WIDGETS */

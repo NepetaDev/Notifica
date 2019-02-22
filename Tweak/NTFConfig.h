@@ -20,6 +20,7 @@
 @property (nonatomic,assign) bool colorizeHeader;
 @property (nonatomic,assign) bool colorizeBackground;
 @property (nonatomic,assign) bool colorizeContent;
+@property (nonatomic,assign) bool colorizeSection;
 
 @property (nonatomic,assign) bool backgroundGradient;
 

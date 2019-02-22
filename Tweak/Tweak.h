@@ -902,7 +902,7 @@
 
 @end
 
-@interface NCNotificationListCollectionView : UIView
+@interface NCNotificationListCollectionView : UICollectionView
 
 @end
 
@@ -1092,5 +1092,59 @@
 @interface SBDashBoardCombinedListViewController : UIViewController
 
 -(void)_updateListViewContentInset;
+
+@end
+
+@interface _UILegibilitySettings : NSObject
+
+@property (nonatomic, retain) UIColor *primaryColor;
+
+@end
+
+@interface SBUILegibilityLabel : UIView
+
+@property (nonatomic, retain) _UILegibilitySettings *legibilitySettings;
+
+-(void)setTextColor:(UIColor *)color;
+-(void)_updateLabelForLegibilitySettings;
+-(void)_updateLegibilityView;
+
+@end
+
+@interface NCNotificationListHeaderTitleView : UIView
+
+@property (nonatomic, retain) SBUILegibilityLabel *titleLabel;
+
+@end
+
+@interface NCToggleControl : UIControl
+
+-(MTMaterialView *)_backgroundMaterialView;
+-(MTMaterialView *)_overlayMaterialView;
+-(UILabel *)_titleLabel;
+-(UIImageView *)_glyphView;
+
+@end
+
+@interface NCToggleControlPair : UIView
+
+@property (nonatomic, retain) NSArray *toggleControls;
+
+@end
+
+@interface NCNotificationListCoalescingControlsView : UIView
+
+@property (nonatomic, retain) NCToggleControlPair *toggleControlPair;
+
+@end
+
+@interface NCNotificationListCoalescingHeaderCell : UICollectionViewCell
+
+@property (nonatomic, retain) NCNotificationListHeaderTitleView *headerTitleView;
+@property (nonatomic, retain) NCNotificationListCoalescingControlsView *coalescingControlsView;
+
+-(void)ntfColorizeHeader:(UIColor *)color;
+-(void)ntfColorizeBackground:(UIColor *)color;
+-(void)ntfColorizeContent:(UIColor *)color;
 
 @end
