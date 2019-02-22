@@ -151,18 +151,16 @@
 			<string>BackgroundBlurMode</string>
 			<key>validValues</key>
 			<array>
-				<integer>0</integer>
 				<integer>1</integer>
 				<integer>2</integer>
 			</array>
 			<key>validTitles</key>
 			<array>
-				<string>DEFAULT</string>
 				<string>LIGHT</string>
 				<string>DARK</string>
 			</array>
 			<key>alignment</key>
-			<string>3</string>
+			<string>2</string>
 			<key>PostNotification</key>
 			<string>me.nepeta.notifica/ReloadPrefs</string>
 		</dict>
