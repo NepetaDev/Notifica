@@ -255,7 +255,7 @@
 }
 
 @property (nonatomic, retain) CAGradientLayer *ntfGradientLayer;
--(void)ntfColorize:(UIColor *)color withBlurColor:(UIColor *)bgColor;
+-(void)ntfColorize:(UIColor *)color withBlurColor:(UIColor *)bgColor alpha:(double)alpha;
 -(void)ntfGradient:(UIColor *)color;
 -(void)ntfSetCornerRadius:(double)cornerRadius;
 
