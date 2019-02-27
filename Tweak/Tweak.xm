@@ -113,10 +113,25 @@ void NTFTestBanner() {
 
 %property (nonatomic, retain) CAGradientLayer *ntfGradientLayer;
 
+-(void)layoutSubviews {
+    %orig;
+    self.clipsToBounds = YES;
+
+    if ([self.superview isKindOfClass:%c(SBDashBoardViewBase)] || [self.superview isKindOfClass:%c(SBCoverSheetWindow)]) {
+        UIView *view = MSHookIvar<UIView *>(self, "_backdropView");
+        _MTBackdropView *backdropView = (_MTBackdropView *)view;
+        if ([view respondsToSelector:@selector(setColorMatrixColor:)]) {
+            [backdropView setBackgroundColor: [UIColor clearColor]];
+        }
+    }
+}
+
 %new
 -(void)ntfColorize:(UIColor *)color withBlurColor:(UIColor *)bgColor alpha:(double)alpha {
     UIView *view = MSHookIvar<UIView *>(self, "_backdropView");
     if (!view || !color || !bgColor) return;
+
+    view.clipsToBounds = YES;
 
     if ([view respondsToSelector:@selector(setColorMatrixColor:)]) {
         _MTBackdropView *backdropView = (_MTBackdropView *)view;
