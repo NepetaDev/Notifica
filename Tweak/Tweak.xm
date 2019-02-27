@@ -128,10 +128,9 @@ void NTFTestBanner() {
     self.clipsToBounds = YES;
     view.clipsToBounds = YES;
 
-    if ([self.superview isKindOfClass:%c(SBDashBoardViewBase)] || [self.superview isKindOfClass:%c(SBCoverSheetWindow)]) {
-        if ([view respondsToSelector:@selector(setColorMatrixColor:)]) {
-            _MTBackdropView *backdropView = (_MTBackdropView *)view;
-            [backdropView setBackgroundColor: [UIColor clearColor]];
+    if ([self respondsToSelector:@selector(groupName)] && [self.groupName isEqualToString:@"NCNotificationCombinedListViewController.blur.MTMaterialRecipeNotifications"]) {
+        if ([[UIScreen mainScreen] bounds].size.height == self.bounds.size.height) {
+            self.hidden = YES;
         }
     }
 }
@@ -574,12 +573,9 @@ void NTFTestBanner() {
     
     ntfMoveUpBy(5, headerContentView);
     
-    if (headerContentView.bounds.origin.x - headerContentView.frame.origin.x == 0) {
+    bool isLTR = ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] != UIUserInterfaceLayoutDirectionRightToLeft);
+    if (isLTR && headerContentView.bounds.origin.x - headerContentView.frame.origin.x == 0) {
         headerContentView.bounds = CGRectInset(headerContentView.bounds, -5.0f, 0);
-    }
-
-    if ([config style] == 1) {
-        headerContentView.titleLabel.frame = CGRectMake(headerContentView.titleLabel.frame.origin.x + 5, headerContentView.titleLabel.frame.origin.y, headerContentView.titleLabel.frame.size.width - 5, headerContentView.titleLabel.frame.size.height);
     }
 }
 
@@ -940,12 +936,9 @@ void NTFTestBanner() {
     
     ntfMoveUpBy(5, headerContentView);
     
-    if (headerContentView.bounds.origin.x - headerContentView.frame.origin.x == 0) {
+    bool isLTR = ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] != UIUserInterfaceLayoutDirectionRightToLeft);
+    if (isLTR && headerContentView.bounds.origin.x - headerContentView.frame.origin.x == 0) {
         headerContentView.bounds = CGRectInset(headerContentView.bounds, -5.0f, 0);
-    }
-
-    if ([config style] == 1) {
-        headerContentView.titleLabel.frame = CGRectMake(headerContentView.titleLabel.frame.origin.x + 5, headerContentView.titleLabel.frame.origin.y, headerContentView.titleLabel.frame.size.width - 5, headerContentView.titleLabel.frame.size.height);
     }
 }
 
