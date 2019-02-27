@@ -70,9 +70,9 @@
 			<key>key</key>
 			<string>VerticalOffset</string>
 			<key>min</key>
-			<real>-200</real>
+			<real>-500</real>
 			<key>max</key>
-			<real>200</real>
+			<real>500</real>
 			<key>showValue</key>
 			<true/>
 			<key>isSegmented</key>
