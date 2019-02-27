@@ -845,6 +845,12 @@
 
 @end
 
+@interface BSUIEmojiLabelView : UIView
+
+-(UILabel*)contentLabel;
+
+@end
+
 @interface BSUIRelativeDateLabel : UILabel
 @end
 

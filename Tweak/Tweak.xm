@@ -109,18 +109,28 @@ void NTFTestBanner() {
 
 %group Notifica
 
+%hook _MTBackdropView
+
+-(void)layoutSubviews {
+    %orig;
+    self.clipsToBounds = YES;
+}
+
+%end
+
 %hook MTMaterialView
 
 %property (nonatomic, retain) CAGradientLayer *ntfGradientLayer;
 
 -(void)layoutSubviews {
     %orig;
+    UIView *view = MSHookIvar<UIView *>(self, "_backdropView");
     self.clipsToBounds = YES;
+    view.clipsToBounds = YES;
 
     if ([self.superview isKindOfClass:%c(SBDashBoardViewBase)] || [self.superview isKindOfClass:%c(SBCoverSheetWindow)]) {
-        UIView *view = MSHookIvar<UIView *>(self, "_backdropView");
-        _MTBackdropView *backdropView = (_MTBackdropView *)view;
         if ([view respondsToSelector:@selector(setColorMatrixColor:)]) {
+            _MTBackdropView *backdropView = (_MTBackdropView *)view;
             [backdropView setBackgroundColor: [UIColor clearColor]];
         }
     }
@@ -131,12 +141,12 @@ void NTFTestBanner() {
     UIView *view = MSHookIvar<UIView *>(self, "_backdropView");
     if (!view || !color || !bgColor) return;
 
+    self.clipsToBounds = YES;
     view.clipsToBounds = YES;
 
     if ([view respondsToSelector:@selector(setColorMatrixColor:)]) {
         _MTBackdropView *backdropView = (_MTBackdropView *)view;
 
-        self.layer.cornerRadius = backdropView.layer.cornerRadius;
         [backdropView setBackgroundColor: bgColor];
         [backdropView setColorMatrixColor: [color colorWithAlphaComponent:alpha]];
     } else {
@@ -706,7 +716,12 @@ void NTFTestBanner() {
     [[notificationContentView _primaryLabel] setTextColor:color];
     [[notificationContentView _primarySubtitleLabel] setTextColor:color];
     if ([notificationContentView respondsToSelector:@selector(_secondaryLabel)]) [[notificationContentView _secondaryLabel] setTextColor:color];
-    if ([notificationContentView respondsToSelector:@selector(_summaryLabel)]) [[notificationContentView _summaryLabel] setTextColor:color];
+    if ([notificationContentView respondsToSelector:@selector(_summaryLabel)]) {
+        [[[notificationContentView _summaryLabel] layer] setFilters:nil];
+        [[[[notificationContentView _summaryLabel] contentLabel] layer] setFilters:nil];
+        [[notificationContentView _summaryLabel] setTextColor:color];
+        [[[notificationContentView _summaryLabel] contentLabel] setTextColor:color];
+    }
 }
 
 %new
@@ -902,7 +917,12 @@ void NTFTestBanner() {
     [[[self _notificationContentView] _primaryLabel] setTextColor:color];
     [[[self _notificationContentView] _primarySubtitleLabel] setTextColor:color];
     if ([[self _notificationContentView] respondsToSelector:@selector(_secondaryLabel)]) [[[self _notificationContentView] _secondaryLabel] setTextColor:color];
-    if ([[self _notificationContentView] respondsToSelector:@selector(_summaryLabel)]) [[[self _notificationContentView] _summaryLabel] setTextColor:color];
+    if ([[self _notificationContentView] respondsToSelector:@selector(_summaryLabel)]) {
+        [[[[self _notificationContentView] _summaryLabel] layer] setFilters:nil];
+        [[[[[self _notificationContentView] _summaryLabel] contentLabel] layer] setFilters:nil];
+        [[[self _notificationContentView] _summaryLabel] setTextColor:color];
+        [[[[self _notificationContentView] _summaryLabel] contentLabel] setTextColor:color];
+    }
 }
 
 %new
