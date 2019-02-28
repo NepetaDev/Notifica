@@ -123,7 +123,30 @@
 			<key>isSegmented</key>
 			<false/>
 		</dict>
-
+		<dict>
+			<key>cell</key>
+			<string>PSStaticTextCell</string>
+			<key>label</key>
+			<string>ICON_CORNER_RADIUS</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>0</real>
+			<key>defaults</key>
+			<string>me.nepeta.notifica</string>
+			<key>key</key>
+			<string>IconCornerRadius</string>
+			<key>min</key>
+			<real>0</real>
+			<key>max</key>
+			<real>50</real>
+			<key>showValue</key>
+			<true/>
+			<key>isSegmented</key>
+			<false/>
+		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>

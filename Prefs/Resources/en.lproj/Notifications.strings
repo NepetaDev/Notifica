@@ -5,6 +5,7 @@
   "NOTIFICATION_OPACITY" = "Notification opacity";
   "CORNER_RADIUS" = "Notification corner radius";
   "CENTER_CONTENTS" = "Center contents";
+  "ICON_CORNER_RADIUS" = "Icon corner radius";
 
   "STYLE" = "Style";
   "MODERN" = "Modern";

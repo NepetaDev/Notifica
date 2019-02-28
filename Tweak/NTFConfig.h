@@ -44,6 +44,8 @@
 @property (nonatomic,assign) double backgroundBlurColorAlpha;
 @property (nonatomic,assign) int cornerRadius;
 
+@property (nonatomic,assign) int iconCornerRadius;
+
 -(NTFConfig *)initWithSub:(NSString*)sub prefs:(id)prefs colors:(NSDictionary*)colors;
 
 @end
