@@ -1,6 +1,7 @@
 {
   "BACKGROUND_COLOR" = "Background color";
   "HEADER_TEXT_COLOR" = "Header text color";
+  "CONTENT_TEXT_COLOR" = "Content text color";
   "CORNER_RADIUS" = "Widget corner radius";
   "ICON_CORNER_RADIUS" = "Icon corner radius";
 

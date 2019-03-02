@@ -3,6 +3,7 @@
 	"BACKGROUND_BLUR_MODE" = "背景虛化模式";
 	"BACKGROUND_BLUR_OPACITY" = "背景虛化透明度";
 	"BACKGROUND_COLOR" = "背景顏色";
+	"CONTENT_TEXT_COLOR" = "內容文本顏色";
 	"CORNER_RADIUS" = "小部件圓角半徑";
 	"CUSTOM" = "自定義";
 	"CUSTOM_COLOR" = "自定義顏色";

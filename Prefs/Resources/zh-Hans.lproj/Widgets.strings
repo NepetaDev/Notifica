@@ -4,6 +4,7 @@
 	"BACKGROUND_BLUR_OPACITY" = "背景虚化透明度";
 	"BACKGROUND_COLOR" = "背景颜色";
 	"CORNER_RADIUS" = "小部件圆角半径";
+	"CONTENT_TEXT_COLOR" = "内容文本颜色";
 	"CUSTOM" = "自定义";
 	"CUSTOM_COLOR" = "自定义颜色";
 	"DARK" = "黑暗";

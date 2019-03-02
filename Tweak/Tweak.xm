@@ -1278,12 +1278,40 @@ UIColor *getAverageColor(UIImage *image) {
 
 %end
 
+// Thanks to Skittyblock
+// https://github.com/Skittyblock/Dune/blob/master/Tweak.xm
+
+%group NotificaColorizeWidgetContents
+
+%hook UILabel
+
+-(void)setTextColor:(UIColor *)textColor {
+    %orig([configWidgets contentColor]);
+}
+
+%end
+
+%hook UIButton
+
+-(void)setTintColor:(UIColor *)color {
+    %orig([configWidgets contentColor]);
+}
+
+%end
+
+%hook UIActivityIndicatorView
+
+-(void)setColor:(UIColor *)color {
+    %orig([configWidgets contentColor]);
+}
+
+%end
+
+%end
+
 %ctor{
-    bool showConfigurator = false;
-    if (showConfigurator) {
-        %init(NotificaConfigurator);
-    }
-    NSLog(@"[Notifica] init");
+    NSString *processName = [NSProcessInfo processInfo].processName;
+    bool isSpringboard = [@"SpringBoard" isEqualToString:processName];
 
     #ifndef SIMULATOR
     HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"me.nepeta.notifica"];
@@ -1295,26 +1323,50 @@ UIColor *getAverageColor(UIImage *image) {
     enabled = true;
     #endif
 
-    if (enabled) {
-        configNotifications = [[NTFConfig alloc] initWithSub:@"Notifications" prefs:file colors:colors];
-        configBanners = [[NTFConfig alloc] initWithSub:@"Banners" prefs:file colors:colors];
-        configWidgets = [[NTFConfig alloc] initWithSub:@"Widgets" prefs:file colors:colors];
-        configNC = [[NTFConfig alloc] initWithSub:@"NotificationCenter" prefs:file colors:colors];
-        configDetails = [[NTFConfig alloc] initWithSub:@"Details" prefs:file colors:colors];
-        configNowPlaying = [[NTFConfig alloc] initWithSub:@"NowPlaying" prefs:file colors:colors];
-        configExperimental = [[NTFConfig alloc] initWithSub:@"Experimental" prefs:file colors:colors];
+    if (!enabled) return;
 
-        %init(Notifica);
-        %init(NotificaNC);
+    if (isSpringboard) {
+        bool showConfigurator = false;
+        if (showConfigurator) {
+            %init(NotificaConfigurator);
+        }
+        NSLog(@"[Notifica] init");
 
-        if ([configNotifications enabled] || [configBanners enabled]) %init(NotificaNotificationsBanners);
-        if ([configNotifications enabled]) %init(NotificaNotifications);
-        if ([configWidgets enabled]) %init(NotificaWidgets);
-        if ([configDetails enabled]) %init(NotificaDetails);
-        if ([configNowPlaying enabled]) %init(NotificaNowPlaying);
+        if (enabled) {
+            configNotifications = [[NTFConfig alloc] initWithSub:@"Notifications" prefs:file colors:colors];
+            configBanners = [[NTFConfig alloc] initWithSub:@"Banners" prefs:file colors:colors];
+            configWidgets = [[NTFConfig alloc] initWithSub:@"Widgets" prefs:file colors:colors];
+            configNC = [[NTFConfig alloc] initWithSub:@"NotificationCenter" prefs:file colors:colors];
+            configDetails = [[NTFConfig alloc] initWithSub:@"Details" prefs:file colors:colors];
+            configNowPlaying = [[NTFConfig alloc] initWithSub:@"NowPlaying" prefs:file colors:colors];
+            configExperimental = [[NTFConfig alloc] initWithSub:@"Experimental" prefs:file colors:colors];
+
+            %init(Notifica);
+            %init(NotificaNC);
+
+            if ([configNotifications enabled] || [configBanners enabled]) %init(NotificaNotificationsBanners);
+            if ([configNotifications enabled]) %init(NotificaNotifications);
+            if ([configWidgets enabled]) %init(NotificaWidgets);
+            if ([configDetails enabled]) %init(NotificaDetails);
+            if ([configNowPlaying enabled]) %init(NotificaNowPlaying);
+        }
+
+        %init(NotificaNotificationTest);
+        CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)NTFTestNotifications, (CFStringRef)@"me.nepeta.notifica/TestNotifications", NULL, kNilOptions);
+        CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)NTFTestBanner, (CFStringRef)@"me.nepeta.notifica/TestBanner", NULL, kNilOptions);
+    } else {
+        NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
+        NSDictionary *extensionDictionary = infoDictionary[@"NSExtension"];
+        if (extensionDictionary) {
+            if (extensionDictionary[@"NSExtensionPointIdentifier"] && [extensionDictionary[@"NSExtensionPointIdentifier"] isEqualToString:@"com.apple.widget-extension"]) {
+                configWidgets = [[NTFConfig alloc] initWithSub:@"Widgets" prefs:file colors:colors];
+
+                if ([configWidgets enabled] && [configWidgets colorizeContent]) {
+                    %init(NotificaColorizeWidgetContents);
+                }
+            }
+		}
+
     }
 
-    %init(NotificaNotificationTest);
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)NTFTestNotifications, (CFStringRef)@"me.nepeta.notifica/TestNotifications", NULL, kNilOptions);
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)NTFTestBanner, (CFStringRef)@"me.nepeta.notifica/TestBanner", NULL, kNilOptions);
 }
