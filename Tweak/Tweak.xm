@@ -217,14 +217,36 @@ UIColor *getAverageColor(UIImage *image) {
     if (self.superview && self.superview.superview) {
         if ([self.superview.superview isKindOfClass:%c(NCNotificationShortLookView)]) {
             NCNotificationShortLookView* sv = (NCNotificationShortLookView *)self.superview.superview;
-            config = [sv ntfConfig];
+            if ([sv respondsToSelector:@selector(ntfConfig)]) config = [sv ntfConfig];
         } else if ([self.superview.superview isKindOfClass:%c(WGWidgetPlatterView)]) {
             config = configWidgets;
         }
     }
 
     if ([config style] == 1) {
-        self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x + 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width - 5, self.titleLabel.frame.size.height);
+        self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x + 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width - 10, self.titleLabel.frame.size.height);
+    }
+}
+%end
+
+%hook MTPlatterHeaderContentView
+
+-(void)_layoutTitleLabelWithScale:(double)arg1 {
+    %orig;
+    NTFConfig *config = nil;
+    if (self.superview && self.superview.superview) {
+        if ([self.superview.superview isKindOfClass:%c(NCNotificationShortLookView)]) {
+            NCNotificationShortLookView* sv = (NCNotificationShortLookView *)self.superview.superview;
+            if ([sv respondsToSelector:@selector(ntfConfig)]) config = [sv ntfConfig];
+        } else if ([self.superview.superview isKindOfClass:%c(WGWidgetPlatterView)]) {
+            config = configWidgets;
+        }
+    }
+
+    if (!config || ![config enabled]) return;
+
+    if ([config style] == 1) {
+        self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x + 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width - 10, self.titleLabel.frame.size.height);
     }
 }
 %end
@@ -247,28 +269,6 @@ UIColor *getAverageColor(UIImage *image) {
     [self.view.contentView ntfColorize];
 }
 
-%end
-
-%hook MTPlatterHeaderContentView
-
--(void)_layoutTitleLabelWithScale:(double)arg1 {
-    %orig;
-    NTFConfig *config = nil;
-    if (self.superview && self.superview.superview) {
-        if ([self.superview.superview isKindOfClass:%c(NCNotificationShortLookView)]) {
-            NCNotificationShortLookView* sv = (NCNotificationShortLookView *)self.superview.superview;
-            config = [sv ntfConfig];
-        } else if ([self.superview.superview isKindOfClass:%c(WGWidgetPlatterView)]) {
-            config = configWidgets;
-        }
-    }
-
-    if (!config || ![config enabled]) return;
-
-    if ([config style] == 1) {
-        self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x + 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width - 5, self.titleLabel.frame.size.height);
-    }
-}
 %end
 
 %hook NCNotificationViewControllerView
@@ -531,10 +531,12 @@ UIColor *getAverageColor(UIImage *image) {
             iconButton.contentVerticalAlignment   = UIControlContentVerticalAlignmentFill;
             iconButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
 
-            iconButton.layer.shadowRadius = 3.0f;
-            iconButton.layer.shadowColor = [UIColor blackColor].CGColor;
-            iconButton.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
-            iconButton.layer.shadowOpacity = 0.5f;
+            if (![configExperimental disableIconShadow]) {
+                iconButton.layer.shadowRadius = 3.0f;
+                iconButton.layer.shadowColor = [UIColor blackColor].CGColor;
+                iconButton.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
+                iconButton.layer.shadowOpacity = 0.5f;
+            }
             iconButton.layer.masksToBounds = NO;
         }
 
@@ -907,10 +909,12 @@ UIColor *getAverageColor(UIImage *image) {
             iconButton.contentVerticalAlignment   = UIControlContentVerticalAlignmentFill;
             iconButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
 
-            iconButton.layer.shadowRadius = 3.0f;
-            iconButton.layer.shadowColor = [UIColor blackColor].CGColor;
-            iconButton.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
-            iconButton.layer.shadowOpacity = 0.5f;
+            if (![configExperimental disableIconShadow]) {
+                iconButton.layer.shadowRadius = 3.0f;
+                iconButton.layer.shadowColor = [UIColor blackColor].CGColor;
+                iconButton.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
+                iconButton.layer.shadowOpacity = 0.5f;
+            }
             iconButton.layer.masksToBounds = NO;
         }
 

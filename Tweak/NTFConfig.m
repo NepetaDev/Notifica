@@ -86,6 +86,7 @@
     self.experimentalColors = [([dict objectForKey:@"ExperimentalColors"] ?: @(NO)) boolValue];
     self.hdIcons = [([dict objectForKey:@"HDIcons"] ?: @(NO)) boolValue];
     self.colorizeSection = [([dict objectForKey:@"ColorizeSection"] ?: @(NO)) boolValue];
+    self.disableIconShadow = [([dict objectForKey:@"DisableIconShadow"] ?: @(NO)) boolValue];
 
     return self;
 }
