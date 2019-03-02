@@ -417,7 +417,7 @@ UIColor *getAverageColor(UIImage *image) {
 
 -(void)layoutSubviews {
     %orig;
-    if (![configNC colorizeSection]) return;
+    if (![configExperimental colorizeSection]) return;
 
     NCNotificationListCoalescingHeaderCell *cell = nil;
     for (UIView *view in [self subviews]) {

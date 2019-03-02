@@ -85,6 +85,7 @@
     self.idleTimerDisabled = [([dict objectForKey:@"IdleTimerDisabled"] ?: @(NO)) boolValue];
     self.experimentalColors = [([dict objectForKey:@"ExperimentalColors"] ?: @(NO)) boolValue];
     self.hdIcons = [([dict objectForKey:@"HDIcons"] ?: @(NO)) boolValue];
+    self.colorizeSection = [([dict objectForKey:@"ColorizeSection"] ?: @(NO)) boolValue];
 
     return self;
 }

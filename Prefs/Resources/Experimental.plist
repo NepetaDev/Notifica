@@ -54,6 +54,20 @@
 			<key>alternateColors</key>
 			<true/>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>me.nepeta.notifica</string>
+			<key>label</key>
+			<string>COLORIZE_SECTION</string>
+			<key>key</key>
+			<string>ColorizeSection</string>
+			<key>alternateColors</key>
+			<true/>
+		</dict>
 	</array>
 </dict>
 </plist>

@@ -2,4 +2,5 @@
   "DISABLE_IDLE_TIMER" = "Disable auto locking on Lockscreen";
   "EXPERIMENTAL_COLORS" = "Experimental color calculation";
   "HD_ICONS" = "HD/Themed icons";
+  "COLORIZE_SECTION" = "Colorize iOS 12 section buttons";
 }
