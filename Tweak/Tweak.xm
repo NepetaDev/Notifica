@@ -219,6 +219,26 @@ void NTFTestBanner() {
 }
 %end
 
+%end
+
+%group NotificaNotifications
+
+/* -- NOTIFICATIONS */
+
+%hook NCNotificationShortLookViewController
+
+-(void)viewWillAppear:(bool)whatever {
+    %orig;
+    [self.view.contentView ntfColorize];
+}
+
+-(void)viewDidAppear:(bool)whatever {
+    %orig;
+    [self.view.contentView ntfColorize];
+}
+
+%end
+
 %hook MTPlatterHeaderContentView
 
 -(void)_layoutTitleLabelWithScale:(double)arg1 {
@@ -239,26 +259,6 @@ void NTFTestBanner() {
         self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x + 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width - 5, self.titleLabel.frame.size.height);
     }
 }
-%end
-
-%end
-
-%group NotificaNotifications
-
-/* -- NOTIFICATIONS */
-
-%hook NCNotificationShortLookViewController
-
--(void)viewWillAppear:(bool)whatever {
-    %orig;
-    [self.view.contentView ntfColorize];
-}
-
--(void)viewDidAppear:(bool)whatever {
-    %orig;
-    [self.view.contentView ntfColorize];
-}
-
 %end
 
 %hook NCNotificationViewControllerView
