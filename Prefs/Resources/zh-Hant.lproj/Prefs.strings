@@ -19,5 +19,5 @@
 	"TEST_BANNER" = "測試橫幅";
 	"TEST_NOTIFICATIONS" = "測試通知";
 	"WIDGETS" = "小部件";
-    "EXPERIMENTAL" = "Experimental settings";
+    "EXPERIMENTAL" = "实验设置";
 }

@@ -17,6 +17,6 @@
 	"MINIMALIST" = "極簡主義";
 	"MODERN" = "現代";
 	"STYLE" = "風格";
-    "OUTLINE" = "Outline";
-    "THICKNESS" = "Thickness";
+    "OUTLINE" = "轮廓";
+    "THICKNESS" = "厚度";
 }

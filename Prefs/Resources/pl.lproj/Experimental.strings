@@ -1,7 +1,7 @@
 {
-  "DISABLE_IDLE_TIMER" = "Disable auto locking on Lockscreen";
-  "EXPERIMENTAL_COLORS" = "Experimental color calculation";
-  "HD_ICONS" = "HD/Themed icons";
-  "COLORIZE_SECTION" = "Colorize iOS 12 section buttons";
-  "DISABLE_ICON_SHADOW" = "Disable icon shadow";
+  "DISABLE_IDLE_TIMER" = "Wyłącz automatyczne wyłączanie ekranu";
+  "EXPERIMENTAL_COLORS" = "Eksperymentalne obliczanie kolorów";
+  "HD_ICONS" = "Ikony HD/ze stylu";
+  "COLORIZE_SECTION" = "Automatyczne kolorowanie przycisków w iOS 12";
+  "DISABLE_ICON_SHADOW" = "Wyłącz cień ikon";
 }

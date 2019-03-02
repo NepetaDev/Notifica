@@ -22,7 +22,7 @@
 	"STYLE" = "风格";
 	"GRADIENT" = "渐变";
 	"SECONDARY_COLOR" = "次要颜色";
-    "ICON_CORNER_RADIUS" = "Icon corner radius";
-    "OUTLINE" = "Outline";
-    "THICKNESS" = "Thickness";
+    "ICON_CORNER_RADIUS" = "图标角半径";
+    "OUTLINE" = "轮廓";
+    "THICKNESS" = "厚度";
 }

@@ -5,5 +5,5 @@
 	"VERTICAL_OFFSET_NOTIFICATIONS" = "垂直偏移: 通知";
 	"VERTICAL_OFFSET_NOW_PLAYING" = "垂直偏移: 正在播放";
 	"PULL_TO_CLEAR_ALL" = "下拉以清除所有通知";
-	"NOTIFICATION_SPACING" = "Notification spacing";
+	"NOTIFICATION_SPACING" = "通知间隔";
 }
