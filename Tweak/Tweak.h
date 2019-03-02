@@ -580,6 +580,12 @@
 -(void)_configureHeaderContentView;
 @end
 
+@interface WGWidgetHostingViewController : UIViewController
+
+@property (assign,nonatomic) NSString *appBundleID;
+
+@end
+
 @interface WGWidgetPlatterView : MTTitledPlatterView {
 
 	UIView* _compatibilityDarkeningView;
@@ -591,7 +597,7 @@
 
 }
 
-//@property (assign,nonatomic,__weak) WGWidgetHostingViewController* widgetHost;                      //@synthesize widgetHost=_widgetHost - In the implementation block
+@property (assign,nonatomic) WGWidgetHostingViewController* widgetHost;                      //@synthesize widgetHost=_widgetHost - In the implementation block
 //@property (assign,nonatomic,__weak) WGWidgetListItemViewController* listItem;                       //@synthesize listItem=_listItem - In the implementation block
 @property (nonatomic,readonly) UIButton* showMoreButton; 
 @property (assign,getter=isShowingMoreContent,nonatomic) bool showingMoreContent;                   //@synthesize showingMoreContent=_showingMoreContent - In the implementation block
@@ -606,7 +612,6 @@
 -(long long)buttonMode;
 -(void)setButtonMode:(long long)arg1 ;
 -(id)initWithFrame:(CGRect)arg1 andCornerRadius:(double)arg2 ;
--(void)setWidgetHost:(id)arg1 ;
 -(void)setAddWidgetButtonVisible:(bool)arg1 ;
 -(id)addWidgetButton;
 -(id)widgetHost;
@@ -1153,5 +1158,18 @@
 -(void)ntfColorizeHeader:(UIColor *)color;
 -(void)ntfColorizeBackground:(UIColor *)color;
 -(void)ntfColorizeContent:(UIColor *)color;
+
+@end
+
+@interface SBApplication
+
+-(id)icon:(id)arg1 imageWithFormat:(int)arg2;
+
+@end
+
+@interface SBApplicationController
+
++(id)sharedInstance;
+-(SBApplication *)applicationWithBundleIdentifier:(id)arg1;
 
 @end

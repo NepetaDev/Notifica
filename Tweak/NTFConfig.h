@@ -46,6 +46,7 @@
 
 @property (nonatomic,assign) bool idleTimerDisabled;
 @property (nonatomic,assign) bool experimentalColors;
+@property (nonatomic,assign) bool hdIcons;
 
 -(NTFConfig *)initWithSub:(NSString*)sub prefs:(id)prefs colors:(NSDictionary*)colors;
 

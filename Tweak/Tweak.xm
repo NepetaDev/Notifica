@@ -502,7 +502,18 @@ UIColor *getAverageColor(UIImage *image) {
     if ([config hideHeaderBackground]) {
         MSHookIvar<UILabel *>(self, "_headerOverlayView").hidden = YES;
     }
+
 	UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
+    
+    if ([configExperimental hdIcons]) {
+        if (self.widgetHost && self.widgetHost.appBundleID) {
+            UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: self.widgetHost.appBundleID] icon: nil imageWithFormat: 0];
+            if (icon) {
+                [iconButton setImage:icon forState:UIControlStateNormal];
+            }
+        }
+    }
+    
     if ([config style] == 1) {
         MSHookIvar<UILabel *>(self, "_headerOverlayView").hidden = YES;
         for (UIView *subview in self.subviews) {
@@ -687,10 +698,27 @@ UIColor *getAverageColor(UIImage *image) {
         if ([notificationContentView respondsToSelector:@selector(_summaryLabel)]) ((UILabel *)[notificationContentView _summaryLabel]).textAlignment = NSTextAlignmentCenter;
     }
 
-	if ([self respondsToSelector:@selector(iconButtons)])
-	for (UIButton *iconButton in [self performSelector:@selector(iconButtons)]) {
-		iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
-	}
+    UIViewController *controller = nil;
+    if (self.nextResponder.nextResponder.nextResponder) {
+        controller = (UIViewController*)self.nextResponder.nextResponder.nextResponder;
+    }
+    
+    MTPlatterHeaderContentView *headerContentView = MSHookIvar<MTPlatterHeaderContentView *>(self, "_headerContentView");
+    UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
+
+    if ([configExperimental hdIcons]) {
+        if (controller && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
+            NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
+            if (req.bulletin && req.bulletin.sectionID) {
+                UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: req.bulletin.sectionID] icon: nil imageWithFormat: 0];
+                if (icon) {
+                    [iconButton setImage:icon forState:UIControlStateNormal];
+                }
+            }
+        }
+    }
+
+	iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
 
     [self ntfHideStuff];
     [self ntfColorize];
@@ -850,6 +878,18 @@ UIColor *getAverageColor(UIImage *image) {
     }
 
     UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
+    
+    if ([configExperimental hdIcons]) {
+        if (controller && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
+            NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
+            if (req.bulletin && req.bulletin.sectionID) {
+                UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: req.bulletin.sectionID] icon: nil imageWithFormat: 0];
+                if (icon) {
+                    [iconButton setImage:icon forState:UIControlStateNormal];
+                }
+            }
+        }
+    }
 
     if ([config style] == 1) {
         for (UIView *subview in self.subviews) {
@@ -873,16 +913,6 @@ UIColor *getAverageColor(UIImage *image) {
             iconButton.layer.shadowOpacity = 0.5f;
             iconButton.layer.masksToBounds = NO;
         }
-    
-        /*if (controller && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
-            NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
-            if (req.bulletin && req.bulletin.sectionID) {
-                UIImage *icon = [[ALApplicationList sharedApplicationList] iconOfSize:ALApplicationIconSizeLarge forDisplayIdentifier:req.bulletin.sectionID];
-                if (icon) {
-                    [iconButton setImage:icon forState:UIControlStateNormal];
-                }
-            }
-        }*/
 
         [self ntfRepositionHeader];
     }
