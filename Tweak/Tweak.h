@@ -1091,6 +1091,7 @@
 
 -(void)_clearAllPriorityListNotificationRequests;
 -(void)_clearAllSectionListNotificationRequests;
+-(void)clearAll;
 
 @end
 

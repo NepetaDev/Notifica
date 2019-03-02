@@ -1288,7 +1288,7 @@ UIColor *getAverageColor(UIImage *image) {
     if (scrollView.contentOffset.y < (scrollView.contentSize.height - scrollView.bounds.size.height - verticalOffset) && negativePull) {
         AudioServicesPlaySystemSound(1519);
         [self _clearAllPriorityListNotificationRequests];
-        [self _clearAllSectionListNotificationRequests];
+        [self clearAll];
         negativePull = NO;
     }
 }
