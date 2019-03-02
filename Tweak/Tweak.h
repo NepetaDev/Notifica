@@ -417,6 +417,7 @@
 @property (getter=_dateLabelFont,nonatomic,readonly) UIFont* dateLabelFont; 
 @property (assign,setter=_setUsesLargeTextLayout:,getter=_usesLargeTextLayout,nonatomic) bool usesLargeTextLayout; 
 @property (nonatomic,retain) UIImage* icon; 
+@property (nonatomic,retain) NSArray* icons; 
 @property (nonatomic,copy) NSString* title; 
 @property (nonatomic,copy) NSDate* date;                                                                                      //@synthesize date=_date - In the implementation block
 @property (assign,getter=isDateAllDay,nonatomic) bool dateAllDay;                                                             //@synthesize dateAllDay=_dateAllDay - In the implementation block
