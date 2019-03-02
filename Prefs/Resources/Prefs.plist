@@ -102,6 +102,16 @@
 			<key>NTFSub</key>
 			<string>NowPlaying</string>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>label</key>
+			<string>EXPERIMENTAL</string>
+			<key>detail</key>
+			<string>NTFSubPrefsListController</string>
+			<key>NTFSub</key>
+			<string>Experimental</string>
+		</dict>
 
 		<!-- Credits -->
 		<dict>

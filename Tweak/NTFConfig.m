@@ -33,7 +33,7 @@
     self.hideTime = [([dict objectForKey:@"HideTime"] ?: @(NO)) boolValue];
     self.hideX = [([dict objectForKey:@"HideX"] ?: @(NO)) boolValue];
     self.hideIcon = [([dict objectForKey:@"HideIcon"] ?: @(NO)) boolValue];
-    self.idleTimerEnabled = [([dict objectForKey:@"IdleTimerEnabled"] ?: @(YES)) boolValue];
+    self.idleTimerDisabled = [([dict objectForKey:@"IdleTimerDisabled"] ?: @(NO)) boolValue];
     self.centerText = [([dict objectForKey:@"CenterText"] ?: @(NO)) boolValue];
     self.colorizeSection = [([dict objectForKey:@"ColorizeSection"] ?: @(NO)) boolValue];
     self.pullToClearAll = [([dict objectForKey:@"PullToClearAll"] ?: @(NO)) boolValue];

@@ -9,6 +9,7 @@
   "WIDGETS" = "Widgety";
   "DETAILS" = "Szczegóły";
   "NOW_PLAYING" = "Odtwarzacz";
+  "EXPERIMENTAL" = "Experimental settings";
 
   "RESPRING" = "Respring";
   "RESRPING_NEEDED" = "MUSISZ ZROBIĆ RESPRING PO ZMIANACH USTAWIEŃ.";

@@ -32,7 +32,7 @@
 
 @property (nonatomic,assign) bool hideNoOlder;
 @property (nonatomic,assign) bool centerText;
-@property (nonatomic,assign) bool idleTimerEnabled;
+@property (nonatomic,assign) bool idleTimerDisabled;
 @property (nonatomic,assign) bool pullToClearAll;
 
 @property (nonatomic,assign) double verticalOffset;

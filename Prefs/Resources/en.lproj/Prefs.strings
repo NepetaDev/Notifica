@@ -9,6 +9,7 @@
   "WIDGETS" = "Widgets";
   "DETAILS" = "Details";
   "NOW_PLAYING" = "Now playing";
+  "EXPERIMENTAL" = "Experimental settings";
 
   "RESPRING" = "Respring";
   "RESRPING_NEEDED" = "YOU WILL HAVE TO RESPRING YOUR DEVICE AFTER EDITING SETTINGS HERE.";

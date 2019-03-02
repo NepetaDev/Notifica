@@ -14,6 +14,7 @@ static NTFConfig *configWidgets = nil;
 static NTFConfig *configNC = nil;
 static NTFConfig *configDetails = nil;
 static NTFConfig *configNowPlaying = nil;
+static NTFConfig *configExperimental = nil;
 
 SBDashBoardAdjunctItemView *itemViewMP = nil;
 
@@ -1182,7 +1183,9 @@ void NTFTestBanner() {
 %hook SBDashBoardIdleTimerProvider
 
 -(bool)isIdleTimerEnabled {
-    return [configNC idleTimerEnabled];
+    if ([configExperimental idleTimerDisabled]) return false;
+
+    return %orig;
 }
 
 %end
@@ -1260,6 +1263,7 @@ void NTFTestBanner() {
         configNC = [[NTFConfig alloc] initWithSub:@"NotificationCenter" prefs:file colors:colors];
         configDetails = [[NTFConfig alloc] initWithSub:@"Details" prefs:file colors:colors];
         configNowPlaying = [[NTFConfig alloc] initWithSub:@"NowPlaying" prefs:file colors:colors];
+        configExperimental = [[NTFConfig alloc] initWithSub:@"Experimental" prefs:file colors:colors];
 
         %init(Notifica);
         %init(NotificaNC);
