@@ -224,7 +224,8 @@ UIColor *getAverageColor(UIImage *image) {
     }
     
     if ([config hideIcon]) {
-        self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 30, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 50, self.titleLabel.frame.size.height);
+        if ([config style] == 0) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 25, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 50, self.titleLabel.frame.size.height);
+        if ([config style] == 1) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 30, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 50, self.titleLabel.frame.size.height);
         return;
     }
 
@@ -251,7 +252,8 @@ UIColor *getAverageColor(UIImage *image) {
     if (!config || ![config enabled]) return;
     
     if ([config hideIcon]) {
-        self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 30, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 50, self.titleLabel.frame.size.height);
+        if ([config style] == 0) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 25, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 50, self.titleLabel.frame.size.height);
+        if ([config style] == 1) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 30, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 50, self.titleLabel.frame.size.height);
         return;
     }
 
