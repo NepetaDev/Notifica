@@ -214,13 +214,13 @@ void NTFTestBanner() {
         }
     }
     
-    if ([self.icons count] > 0 && [config hideIcon]) {
+    if (self.icons && [self.icons count] > 0 && [config hideIcon]) {
         if ([config style] == 0) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 25, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 50, self.titleLabel.frame.size.height);
         if ([config style] == 1) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 30, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 50, self.titleLabel.frame.size.height);
         return;
     }
 
-    if ([self.icons count] == 0 && [config hideIcon]) {
+    if (!self.icons || ([self.icons count] == 0 && [config hideIcon])) {
         if ([config style] == 1) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height);
         return;
     }
@@ -1480,18 +1480,16 @@ void NTFTestBanner() {
         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)NTFTestNotifications, (CFStringRef)@"me.nepeta.notifica/TestNotifications", NULL, kNilOptions);
         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)NTFTestBanner, (CFStringRef)@"me.nepeta.notifica/TestBanner", NULL, kNilOptions);
     } else {
+        configWidgets = [[NTFConfig alloc] initWithSub:@"Widgets" prefs:file colors:colors];
+        if (!configWidgets || ![configWidgets enabled] || ![configWidgets colorizeContent]) return;
+
         NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
+        if (!infoDictionary) return;
+
         NSDictionary *extensionDictionary = infoDictionary[@"NSExtension"];
-        if (extensionDictionary) {
-            if (extensionDictionary[@"NSExtensionPointIdentifier"] && [extensionDictionary[@"NSExtensionPointIdentifier"] isEqualToString:@"com.apple.widget-extension"]) {
-                configWidgets = [[NTFConfig alloc] initWithSub:@"Widgets" prefs:file colors:colors];
-
-                if ([configWidgets enabled] && [configWidgets colorizeContent]) {
-                    %init(NotificaColorizeWidgetContents);
-                }
-            }
+        if (extensionDictionary && extensionDictionary[@"NSExtensionPointIdentifier"] && [extensionDictionary[@"NSExtensionPointIdentifier"] isEqualToString:@"com.apple.widget-extension"]) {
+            %init(NotificaColorizeWidgetContents);
 		}
-
     }
 
 }
