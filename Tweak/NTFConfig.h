@@ -40,6 +40,7 @@
 @property (nonatomic,assign) double verticalOffset;
 @property (nonatomic,assign) double verticalOffsetNotifications;
 @property (nonatomic,assign) double verticalOffsetNowPlaying;
+@property (nonatomic,assign) double notificationSpacing;
 @property (nonatomic,assign) double outlineThickness;
 @property (nonatomic,assign) int style;
 @property (nonatomic,assign) double alpha;

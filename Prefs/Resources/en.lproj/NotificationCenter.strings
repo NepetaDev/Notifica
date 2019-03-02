@@ -5,4 +5,5 @@
   "VERTICAL_OFFSET_NOTIFICATIONS" = "Vertical offset: Notifications";
   "VERTICAL_OFFSET_NOW_PLAYING" = "Vertical offset: Now Playing";
   "PULL_TO_CLEAR_ALL" = "Pull to clear all notifications";
+	"NOTIFICATION_SPACING" = "Notification spacing";
 }

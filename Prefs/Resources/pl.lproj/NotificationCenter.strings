@@ -5,4 +5,5 @@
   "VERTICAL_OFFSET_NOTIFICATIONS" = "Odstęp pionowy: powiadomienia";
   "VERTICAL_OFFSET_NOW_PLAYING" = "Odstęp pionowy: odtwarzacz";
   "PULL_TO_CLEAR_ALL" = "Pociągnij w dół, aby wyczyścić powiadomienia";
+	"NOTIFICATION_SPACING" = "Odstęp między powiadomieniami";
 }

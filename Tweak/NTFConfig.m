@@ -42,6 +42,7 @@
     self.verticalOffset = [([dict objectForKey:@"VerticalOffset"] ?: @(0)) doubleValue];
     self.verticalOffsetNotifications = [([dict objectForKey:@"VerticalOffsetNotifications"] ?: @(0)) doubleValue];
     self.verticalOffsetNowPlaying = [([dict objectForKey:@"VerticalOffsetNowPlaying"] ?: @(0)) doubleValue];
+    self.notificationSpacing = [([dict objectForKey:@"NotificationSpacing"] ?: @(8)) doubleValue];
     self.cornerRadius = [([dict objectForKey:@"CornerRadius"] ?: @(13)) intValue];
 
 	self.iconCornerRadius = [([dict objectForKey:@"IconCornerRadius"] ?: @(0)) intValue];
