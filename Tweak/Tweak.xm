@@ -1208,6 +1208,8 @@ UIColor *getAverageColor(UIImage *image) {
 
 /* -- NOTIFICATION CENTER */
 
+/* -- Notification spacing */
+
 %hook NCNotificationListCollectionViewFlowLayout
 
 -(CGFloat)minimumLineSpacing {

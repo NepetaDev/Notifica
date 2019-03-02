@@ -30,20 +30,6 @@
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
-			<true/>
-			<key>defaults</key>
-			<string>me.nepeta.notifica</string>
-			<key>label</key>
-			<string>IDLE_TIMER</string>
-			<key>key</key>
-			<string>IdleTimerEnabled</string>
-			<key>alternateColors</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
 			<false/>
 			<key>defaults</key>
 			<string>me.nepeta.notifica</string>
