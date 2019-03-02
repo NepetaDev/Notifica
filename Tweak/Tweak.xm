@@ -1373,9 +1373,33 @@ UIColor *getAverageColor(UIImage *image) {
 
 %group NotificaColorizeWidgetContents
 
+%hook CALayer
+
+-(void)setFilters:(id)filters {
+    %orig(nil);
+}
+
+%end
+
+%hook UIView
+
+-(void)setTextColor:(UIColor *)color {
+    %orig([configWidgets contentColor]);
+}
+
+-(void)setTintColor:(UIColor *)color {
+    %orig([configWidgets contentColor]);
+}
+
+-(void)setColor:(UIColor *)color {
+    %orig([configWidgets contentColor]);
+}
+
+%end
+
 %hook UILabel
 
--(void)setTextColor:(UIColor *)textColor {
+-(void)setTextColor:(UIColor *)color {
     %orig([configWidgets contentColor]);
 }
 
