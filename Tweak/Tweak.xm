@@ -371,12 +371,12 @@ UIColor *getAverageColor(UIImage *image) {
             }
         }
 
-        if ([configNotifications colorizeHeader]) {
+        if ([configNotifications colorizeContent]) {
             [button.titleLabel.layer setFilters:nil];
-            if ([configNotifications dynamicHeaderColor]) {
+            if ([configNotifications dynamicContentColor]) {
                 [button.titleLabel setTextColor:dynamicColor];
             } else {
-                [button.titleLabel setTextColor:[configNotifications headerColor]];
+                [button.titleLabel setTextColor:[configNotifications contentColor]];
             }
         }
     }
