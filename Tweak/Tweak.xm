@@ -230,7 +230,6 @@ UIColor *getAverageColor(UIImage *image) {
     }
 
     if ([self.icons count] == 0 && [config hideIcon]) {
-        if ([config style] == 0) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 5, self.titleLabel.frame.size.height);
         if ([config style] == 1) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height);
         return;
     }
@@ -264,7 +263,6 @@ UIColor *getAverageColor(UIImage *image) {
     }
 
     if (![self icon] && [config hideIcon]) {
-        if ([config style] == 0) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 5, self.titleLabel.frame.size.height);
         if ([config style] == 1) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 5, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height);
         return;
     }
