@@ -45,6 +45,8 @@
     self.verticalOffsetNowPlaying = [([dict objectForKey:@"VerticalOffsetNowPlaying"] ?: @(0)) doubleValue];
     self.cornerRadius = [([dict objectForKey:@"CornerRadius"] ?: @(13)) intValue];
 
+	self.iconCornerRadius = [([dict objectForKey:@"IconCornerRadius"] ?: @(0)) intValue];
+
     int backgroundColor = [([dict objectForKey:@"BackgroundColor"] ?: @(1)) intValue];
     int headerTextColor = [([dict objectForKey:@"HeaderTextColor"] ?: @(0)) intValue];
     int contentTextColor = [([dict objectForKey:@"ContentTextColor"] ?: @(0)) intValue];

@@ -492,7 +492,7 @@ void NTFTestBanner() {
     if ([config hideHeaderBackground]) {
         MSHookIvar<UILabel *>(self, "_headerOverlayView").hidden = YES;
     }
-
+	UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
     if ([config style] == 1) {
         MSHookIvar<UILabel *>(self, "_headerOverlayView").hidden = YES;
         for (UIView *subview in self.subviews) {
@@ -504,8 +504,6 @@ void NTFTestBanner() {
                 ntfMoveUpBy(-1 * MODERNXI_Y_OFFSET, subview);
             }
         }
-
-        UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
 
         if (iconButton) {
             iconButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
@@ -521,7 +519,7 @@ void NTFTestBanner() {
 
         [self ntfRepositionHeader];
     }
-
+	if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
     [self ntfHideStuff];
     [self ntfColorize];
 }
@@ -678,6 +676,11 @@ void NTFTestBanner() {
         if ([notificationContentView respondsToSelector:@selector(_secondaryLabel)]) ((UILabel *)[notificationContentView _secondaryLabel]).textAlignment = NSTextAlignmentCenter;
         if ([notificationContentView respondsToSelector:@selector(_summaryLabel)]) ((UILabel *)[notificationContentView _summaryLabel]).textAlignment = NSTextAlignmentCenter;
     }
+
+	if ([self respondsToSelector:@selector(iconButtons)])
+	for (UIButton *iconButton in [self performSelector:@selector(iconButtons)]) {
+		iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
+	}
 
     [self ntfHideStuff];
     [self ntfColorize];
@@ -836,6 +839,8 @@ void NTFTestBanner() {
         }
     }
 
+    UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
+
     if ([config style] == 1) {
         for (UIView *subview in self.subviews) {
             if ([subview isKindOfClass:%c(UIImageView)]) {
@@ -846,8 +851,6 @@ void NTFTestBanner() {
                 ntfMoveUpBy(-1 * MODERNXI_Y_OFFSET, subview);
             }
         }
-
-        UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
 
         if (iconButton) {
             iconButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
@@ -873,7 +876,7 @@ void NTFTestBanner() {
 
         [self ntfRepositionHeader];
     }
-
+	if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
     [self ntfHideStuff];
     [self ntfColorize];
 }

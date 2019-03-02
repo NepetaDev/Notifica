@@ -2,6 +2,7 @@
   "BACKGROUND_COLOR" = "Background color";
   "HEADER_TEXT_COLOR" = "Header text color";
   "CORNER_RADIUS" = "Widget corner radius";
+  "ICON_CORNER_RADIUS" = "Icon corner radius";
 
   "STYLE" = "Style";
   "MODERN" = "Modern";
