@@ -17,4 +17,6 @@
 	"MINIMALIST" = "极简主义";
 	"MODERN" = "现代";
 	"STYLE" = "风格";
+    "OUTLINE" = "Outline";
+    "THICKNESS" = "Thickness";
 }

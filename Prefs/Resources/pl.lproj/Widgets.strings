@@ -4,6 +4,8 @@
   "CONTENT_TEXT_COLOR" = "Kolor tekstu zawartości";
   "CORNER_RADIUS" = "Promień zaokrąglenia rogów";
   "ICON_CORNER_RADIUS" = "Promień zaokrąglenia ikon";
+  "OUTLINE" = "Ramka";
+  "THICKNESS" = "Grubość";
 
   "STYLE" = "Styl";
   "MODERN" = "Modern";

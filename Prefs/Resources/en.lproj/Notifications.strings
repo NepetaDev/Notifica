@@ -6,6 +6,8 @@
   "CORNER_RADIUS" = "Notification corner radius";
   "CENTER_CONTENTS" = "Center contents";
   "ICON_CORNER_RADIUS" = "Icon corner radius";
+  "OUTLINE" = "Outline";
+  "THICKNESS" = "Thickness";
 
   "STYLE" = "Style";
   "MODERN" = "Modern";

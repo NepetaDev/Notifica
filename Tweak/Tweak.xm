@@ -317,6 +317,15 @@ UIColor *getAverageColor(UIImage *image) {
                         }
                     }
 
+                    if ([config outline]) {
+                        ((MTMaterialView *)subsubview).layer.borderWidth = [config outlineThickness];
+                        if ([config dynamicOutlineColor]) {
+                            ((MTMaterialView *)subsubview).layer.borderColor = self.contentView.ntfDynamicColor.CGColor;
+                        } else {
+                            ((MTMaterialView *)subsubview).layer.borderColor = [config outlineColor].CGColor;
+                        }
+                    }
+
                     if ([config backgroundGradient]) {
                         [((MTMaterialView *)subsubview) ntfGradient:[config backgroundGradientColor]];
                     }
@@ -378,6 +387,15 @@ UIColor *getAverageColor(UIImage *image) {
                 [button.backgroundView ntfColorize:dynamicColor withBlurColor:[configNotifications blurColor] alpha:[configNotifications backgroundBlurColorAlpha]];
             } else {
                 [button.backgroundView ntfColorize:[configNotifications backgroundColor] withBlurColor:[configNotifications blurColor] alpha:[configNotifications backgroundBlurColorAlpha]];
+            }
+        }
+
+        if ([configNotifications outline]) {
+            button.backgroundView.layer.borderWidth = [configNotifications outlineThickness];
+            if ([configNotifications dynamicOutlineColor]) {
+                button.backgroundView.layer.borderColor = dynamicColor.CGColor;
+            } else {
+                button.backgroundView.layer.borderColor = [configNotifications outlineColor].CGColor;
             }
         }
 
@@ -639,6 +657,15 @@ UIColor *getAverageColor(UIImage *image) {
             [self.backgroundMaterialView ntfColorize:self.ntfDynamicColor withBlurColor:[config blurColor] alpha:[config backgroundBlurColorAlpha]];
         } else {
             [self.backgroundMaterialView ntfColorize:[config backgroundColor] withBlurColor:[config blurColor] alpha:[config backgroundBlurColorAlpha]];
+        }
+    }
+
+    if ([config outline]) {
+        self.backgroundMaterialView.layer.borderWidth = [config outlineThickness];
+        if ([config dynamicOutlineColor]) {
+            self.backgroundMaterialView.layer.borderColor = self.ntfDynamicColor.CGColor;
+        } else {
+            self.backgroundMaterialView.layer.borderColor = [config outlineColor].CGColor;
         }
     }
 
@@ -1030,6 +1057,15 @@ UIColor *getAverageColor(UIImage *image) {
         }
     }
 
+    if ([config outline]) {
+        self.backgroundMaterialView.layer.borderWidth = [config outlineThickness];
+        if ([config dynamicOutlineColor]) {
+            self.backgroundMaterialView.layer.borderColor = self.ntfDynamicColor.CGColor;
+        } else {
+            self.backgroundMaterialView.layer.borderColor = [config outlineColor].CGColor;
+        }
+    }
+
     if ([config backgroundGradient]) {
         [self.backgroundMaterialView ntfGradient:[config backgroundGradientColor]];
     }
@@ -1117,6 +1153,15 @@ UIColor *getAverageColor(UIImage *image) {
     
     self.ntfDynamicColor = getAverageColor(mcpvc.headerView.artworkView.image);
     [self.backgroundMaterialView ntfColorize:self.ntfDynamicColor withBlurColor:[config blurColor] alpha:[config backgroundBlurColorAlpha]];
+
+    if ([config outline]) {
+        self.backgroundMaterialView.layer.borderWidth = [config outlineThickness];
+        if ([config dynamicOutlineColor]) {
+            self.backgroundMaterialView.layer.borderColor = self.ntfDynamicColor.CGColor;
+        } else {
+            self.backgroundMaterialView.layer.borderColor = [config outlineColor].CGColor;
+        }
+    }
     
     view.superview.layer.cornerRadius = [config cornerRadius];
 }

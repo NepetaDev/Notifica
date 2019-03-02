@@ -4,6 +4,8 @@
   "CONTENT_TEXT_COLOR" = "Content text color";
   "CORNER_RADIUS" = "Widget corner radius";
   "ICON_CORNER_RADIUS" = "Icon corner radius";
+  "OUTLINE" = "Outline";
+  "THICKNESS" = "Thickness";
 
   "STYLE" = "Style";
   "MODERN" = "Modern";

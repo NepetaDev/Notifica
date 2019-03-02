@@ -50,24 +50,31 @@
     int headerTextColor = [([dict objectForKey:@"HeaderTextColor"] ?: @(0)) intValue];
     int contentTextColor = [([dict objectForKey:@"ContentTextColor"] ?: @(0)) intValue];
 
+    int outline = [([dict objectForKey:@"Outline"] ?: @(0)) intValue];
+    self.outlineThickness = [([dict objectForKey:@"OutlineThickness"] ?: @(0)) doubleValue];
+
     if (backgroundColor > 0) self.colorizeBackground = true;
     if (headerTextColor > 0) self.colorizeHeader = true;
     if (contentTextColor > 0) self.colorizeContent = true;
+    if (outline > 0) self.outline = true;
 
     if (backgroundColor == 1) self.dynamicBackgroundColor = true;
     if (headerTextColor == 1) self.dynamicHeaderColor = true;
     if (contentTextColor == 1) self.dynamicContentColor = true;
+    if (outline == 1) self.dynamicOutlineColor = true;
 
     #ifndef SIMULATOR
     self.backgroundColor = LCPParseColorString([dict objectForKey:@"CustomBackgroundColor"], @"#000000:1.0");
     self.backgroundGradientColor = LCPParseColorString([dict objectForKey:@"BackgroundGradientColor"], @"#ffffff:1.0");
     self.headerColor = LCPParseColorString([dict objectForKey:@"CustomHeaderTextColor"], @"#ffffff:1.0");
     self.contentColor = LCPParseColorString([dict objectForKey:@"CustomContentTextColor"], @"#ffffff:1.0");
+    self.outlineColor = LCPParseColorString([dict objectForKey:@"CustomOutlineColor"], @"#000000:1.0");
     #else
     self.backgroundColor = [UIColor blackColor];
     self.backgroundGradientColor = [UIColor whiteColor];
     self.headerColor = [UIColor blackColor];
     self.contentColor = [UIColor blackColor];
+    self.outlineColor = [UIColor blackColor];
     #endif
 
     int _backgroundBlurMode = [([dict objectForKey:@"BackgroundBlurMode"] ?: @(1)) intValue];

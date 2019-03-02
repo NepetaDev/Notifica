@@ -6,6 +6,8 @@
   "CORNER_RADIUS" = "Promień zaokrąglenia rogów";
   "CENTER_CONTENTS" = "Wyśrodkowanie zawartości";
   "ICON_CORNER_RADIUS" = "Promień zaokrąglenia ikon";
+  "OUTLINE" = "Ramka";
+  "THICKNESS" = "Grubość";
 
   "STYLE" = "Styl";
   "MODERN" = "Modern";

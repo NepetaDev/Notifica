@@ -2,6 +2,8 @@
   "BACKGROUND_COLOR" = "Background color";
   "HEADER_TEXT_COLOR" = "Header text color";
   "CORNER_RADIUS" = "Widget corner radius";
+  "OUTLINE" = "Outline";
+  "THICKNESS" = "Thickness";
 
   "STYLE" = "Style";
   "MODERN" = "Modern";

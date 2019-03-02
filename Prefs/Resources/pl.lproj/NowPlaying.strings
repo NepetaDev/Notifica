@@ -2,6 +2,8 @@
   "BACKGROUND_COLOR" = "Kolor tła";
   "HEADER_TEXT_COLOR" = "Kolor tekstu nagłówka";
   "CORNER_RADIUS" = "Promień zaokrąglenia rogów";
+  "OUTLINE" = "Ramka";
+  "THICKNESS" = "Grubość";
 
   "HIDE_ICON" = "Hide icon";
   "HIDE_APP_NAME" = "Hide app name";

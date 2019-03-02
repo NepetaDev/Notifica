@@ -12,10 +12,12 @@
 @property (nonatomic,retain) UIColor *blurColor;
 @property (nonatomic,retain) UIColor *contentColor;
 @property (nonatomic,retain) UIColor *headerColor;
+@property (nonatomic,retain) UIColor *outlineColor;
 
 @property (nonatomic,assign) bool dynamicHeaderColor;
 @property (nonatomic,assign) bool dynamicBackgroundColor;
 @property (nonatomic,assign) bool dynamicContentColor;
+@property (nonatomic,assign) bool dynamicOutlineColor;
 
 @property (nonatomic,assign) bool colorizeHeader;
 @property (nonatomic,assign) bool colorizeBackground;
@@ -29,6 +31,7 @@
 @property (nonatomic,assign) bool hideHeaderBackground;
 @property (nonatomic,assign) bool hideTime;
 @property (nonatomic,assign) bool hideX;
+@property (nonatomic,assign) bool outline;
 
 @property (nonatomic,assign) bool hideNoOlder;
 @property (nonatomic,assign) bool centerText;
@@ -37,6 +40,7 @@
 @property (nonatomic,assign) double verticalOffset;
 @property (nonatomic,assign) double verticalOffsetNotifications;
 @property (nonatomic,assign) double verticalOffsetNowPlaying;
+@property (nonatomic,assign) double outlineThickness;
 @property (nonatomic,assign) int style;
 @property (nonatomic,assign) double alpha;
 @property (nonatomic,assign) double backgroundBlurAlpha;
