@@ -6,6 +6,7 @@
   "CORNER_RADIUS" = "Notification corner radius";
   "CENTER_CONTENTS" = "Center contents";
   "CONTENT_TEXT_COLOR" = "Content text color";
+  "ICON_CORNER_RADIUS" = "Icon corner radius";
 
   "STYLE" = "Style";
   "MODERN" = "Modern";

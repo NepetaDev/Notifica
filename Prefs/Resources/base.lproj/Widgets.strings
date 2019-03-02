@@ -9,6 +9,7 @@
   "HIDE_ICON" = "Hide icon";
   "HIDE_APP_NAME" = "Hide app name";
   "HIDE_HEADER_BACKGROUND" = "Hide header background";
+  "ICON_CORNER_RADIUS" = "Icon corner radius";
 
   "DEFAULT" = "Default";
   "DYNAMIC" = "Dynamic";

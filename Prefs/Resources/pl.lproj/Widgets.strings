@@ -3,6 +3,7 @@
   "HEADER_TEXT_COLOR" = "Kolor tekstu nagłówka";
   "CONTENT_TEXT_COLOR" = "Kolor tekstu zawartości";
   "CORNER_RADIUS" = "Promień zaokrąglenia rogów";
+  "ICON_CORNER_RADIUS" = "Promień zaokrąglenia ikon";
 
   "STYLE" = "Styl";
   "MODERN" = "Modern";

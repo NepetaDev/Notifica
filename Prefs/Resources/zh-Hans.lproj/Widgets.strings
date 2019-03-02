@@ -20,4 +20,5 @@
 	"STYLE" = "风格";
 	"GRADIENT" = "渐变";
 	"SECONDARY_COLOR" = "次要颜色";
+    "ICON_CORNER_RADIUS" = "Icon corner radius";
 }
