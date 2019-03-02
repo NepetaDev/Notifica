@@ -108,15 +108,6 @@ void NTFTestBanner() {
     fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test banner!", true);
 }
 
-UIColor *getAverageColor(UIImage *image) {
-    if ([configExperimental experimentalColors]) {
-        NEPPalette colors = [NEPColorUtils averageColors:image withAlpha:1.0];
-        return colors.primary;
-    } else {
-        return [NEPColorUtils averageColor:image withAlpha:1.0];
-    }
-}
-
 %group Notifica
 
 %hook _MTBackdropView
@@ -653,7 +644,12 @@ UIColor *getAverageColor(UIImage *image) {
         MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
         UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
         if (iconButton) {
-            self.ntfDynamicColor = getAverageColor(iconButton.imageView.image);
+            if (![configExperimental experimentalColors]) {
+                self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+            } else {
+                NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
+                self.ntfDynamicColor = colors.primary;
+            }
         } else {
             self.ntfDynamicColor = [config backgroundColor];
         }
@@ -826,7 +822,12 @@ UIColor *getAverageColor(UIImage *image) {
     if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
         UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
         if (iconButton) {
-            self.ntfDynamicColor = getAverageColor(iconButton.imageView.image);
+            if (![configExperimental experimentalColors]) {
+                self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+            } else {
+                NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
+                self.ntfDynamicColor = colors.primary;
+            }
         } else {
             self.ntfDynamicColor = [config backgroundColor];
         }
@@ -1051,7 +1052,12 @@ UIColor *getAverageColor(UIImage *image) {
         MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
         UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
         if (iconButton) {
-            self.ntfDynamicColor = getAverageColor(iconButton.imageView.image);
+            if (![configExperimental experimentalColors]) {
+                self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+            } else {
+                NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
+                self.ntfDynamicColor = colors.primary;
+            }
         } else {
             self.ntfDynamicColor = [config backgroundColor];
         }
@@ -1163,7 +1169,12 @@ UIColor *getAverageColor(UIImage *image) {
     MediaControlsPanelViewController *mcpvc = MSHookIvar<MediaControlsPanelViewController *>(view.nextResponder, "_mediaControlsPanelViewController");
     if (!mcpvc || !mcpvc.headerView || !mcpvc.headerView.artworkView || !mcpvc.headerView.artworkView.image || !self.backgroundMaterialView) return;
     
-    self.ntfDynamicColor = getAverageColor(mcpvc.headerView.artworkView.image);
+    if (![configExperimental experimentalColors]) {
+        self.ntfDynamicColor = [NEPColorUtils averageColor:mcpvc.headerView.artworkView.image withAlpha:1.0];
+    } else {
+        NEPPalette colors = [NEPColorUtils averageColors:mcpvc.headerView.artworkView.image withAlpha:1.0];
+        self.ntfDynamicColor = colors.primary;
+    }
     [self.backgroundMaterialView ntfColorize:self.ntfDynamicColor withBlurColor:[config blurColor] alpha:[config backgroundBlurColorAlpha]];
 
     if ([config outline]) {
