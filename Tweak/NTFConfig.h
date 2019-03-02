@@ -32,7 +32,6 @@
 
 @property (nonatomic,assign) bool hideNoOlder;
 @property (nonatomic,assign) bool centerText;
-@property (nonatomic,assign) bool idleTimerDisabled;
 @property (nonatomic,assign) bool pullToClearAll;
 
 @property (nonatomic,assign) double verticalOffset;
@@ -43,8 +42,10 @@
 @property (nonatomic,assign) double backgroundBlurAlpha;
 @property (nonatomic,assign) double backgroundBlurColorAlpha;
 @property (nonatomic,assign) int cornerRadius;
-
 @property (nonatomic,assign) int iconCornerRadius;
+
+@property (nonatomic,assign) bool idleTimerDisabled;
+@property (nonatomic,assign) bool experimentalColors;
 
 -(NTFConfig *)initWithSub:(NSString*)sub prefs:(id)prefs colors:(NSDictionary*)colors;
 

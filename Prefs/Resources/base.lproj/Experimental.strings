@@ -1,3 +1,4 @@
 {
   "DISABLE_IDLE_TIMER" = "Disable auto locking on Lockscreen";
+  "EXPERIMENTAL_COLORS" = "Experimental color calculation";
 }
