@@ -1155,14 +1155,14 @@ UIColor *getAverageColor(UIImage *image) {
     [self.backgroundMaterialView ntfColorize:self.ntfDynamicColor withBlurColor:[config blurColor] alpha:[config backgroundBlurColorAlpha]];
 
     if ([config outline]) {
-        self.backgroundMaterialView.layer.borderWidth = [config outlineThickness];
+        view.superview.layer.borderWidth = [config outlineThickness];
         if ([config dynamicOutlineColor]) {
-            self.backgroundMaterialView.layer.borderColor = self.ntfDynamicColor.CGColor;
+            view.superview.layer.borderColor = self.ntfDynamicColor.CGColor;
         } else {
-            self.backgroundMaterialView.layer.borderColor = [config outlineColor].CGColor;
+            view.superview.layer.borderColor = [config outlineColor].CGColor;
         }
     }
-    
+
     view.superview.layer.cornerRadius = [config cornerRadius];
 }
 
@@ -1173,7 +1173,7 @@ UIColor *getAverageColor(UIImage *image) {
         return;
     }
 
-    self.ntfDynamicColor = nil;
+    self.ntfDynamicColor = [config backgroundColor];
 
     [self.backgroundMaterialView ntfSetCornerRadius:[config cornerRadius]];
     UIView *backdropView = MSHookIvar<UIView *>(self.backgroundMaterialView, "_backdropView");
@@ -1185,6 +1185,15 @@ UIColor *getAverageColor(UIImage *image) {
             [self ntfReadjustColorBasedOnArtwork];
         } else {
             [self.backgroundMaterialView ntfColorize:[config backgroundColor] withBlurColor:[config blurColor] alpha:[config backgroundBlurColorAlpha]];
+        }
+    }
+
+    if ([config outline]) {
+        view.superview.layer.borderWidth = [config outlineThickness];
+        if ([config dynamicOutlineColor]) {
+            view.superview.layer.borderColor = self.ntfDynamicColor.CGColor;
+        } else {
+            view.superview.layer.borderColor = [config outlineColor].CGColor;
         }
     }
 }

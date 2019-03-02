@@ -51,7 +51,7 @@
     int contentTextColor = [([dict objectForKey:@"ContentTextColor"] ?: @(0)) intValue];
 
     int outline = [([dict objectForKey:@"Outline"] ?: @(0)) intValue];
-    self.outlineThickness = [([dict objectForKey:@"OutlineThickness"] ?: @(0)) doubleValue];
+    self.outlineThickness = [([dict objectForKey:@"OutlineThickness"] ?: @(1.0)) doubleValue];
 
     if (backgroundColor > 0) self.colorizeBackground = true;
     if (headerTextColor > 0) self.colorizeHeader = true;
