@@ -871,6 +871,8 @@ void NTFTestBanner() {
     %orig;
 
     NTFConfig *config = [self ntfConfig];
+    if (!config || ![config enabled]) return; // do not remove that; breaks banners
+
     UIViewController *controller = nil;
     if (self.nextResponder.nextResponder.nextResponder) {
         controller = (UIViewController*)self.nextResponder.nextResponder.nextResponder;
