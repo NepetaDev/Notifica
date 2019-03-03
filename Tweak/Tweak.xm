@@ -737,7 +737,7 @@ void NTFTestBanner() {
     UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
 
     if ([configExperimental hdIcons]) {
-        if (controller && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
+        if (controller && [controller isKindOfClass:%c(NCNotificationShortLookViewController)] && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
             NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
             if (req.bulletin && req.bulletin.sectionID) {
                 UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: req.bulletin.sectionID] icon: nil imageWithFormat: 0];
@@ -901,7 +901,7 @@ void NTFTestBanner() {
     }
 
     UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
-    if (controller && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
+    if (controller && [controller isKindOfClass:%c(NCNotificationShortLookViewController)] && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
         NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
         if (req.bulletin && req.bulletin.sectionID) {
             if (![self.ntfId isEqualToString:req.bulletin.sectionID]) {
