@@ -499,6 +499,7 @@ void NTFTestBanner() {
 %hook WGWidgetPlatterView
 
 %property (nonatomic, retain) UIColor *ntfDynamicColor;
+%property (nonatomic, retain) NSString *ntfId;
 
 -(void)setIcon:(UIImage *)arg1 {
     %orig;
@@ -534,14 +535,31 @@ void NTFTestBanner() {
 
 	UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
     
-    if ([configExperimental hdIcons]) {
-        if (self.widgetHost && self.widgetHost.appBundleID) {
-            UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: self.widgetHost.appBundleID] icon: nil imageWithFormat: 0];
-            if (icon) {
-                [iconButton setImage:icon forState:UIControlStateNormal];
+    //if (![self.ntfId isEqualToString:self.widgetHost.appBundleID]) {
+    //    self.ntfId = self.widgetHost.appBundleID;
+        if ([configExperimental hdIcons]) {
+            if (self.widgetHost && self.widgetHost.appBundleID) {
+                UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: self.widgetHost.appBundleID] icon: nil imageWithFormat: 0];
+                if (icon) {
+                    [iconButton setImage:icon forState:UIControlStateNormal];
+                }
             }
         }
-    }
+        self.ntfDynamicColor = nil;
+
+        if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
+            if (iconButton) {
+                if (![configExperimental experimentalColors]) {
+                    self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+                } else {
+                    NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
+                    self.ntfDynamicColor = colors.primary;
+                }
+            } else {
+                self.ntfDynamicColor = [config backgroundColor];
+            }
+        }
+    //}
     
     if ([config style] == 1) {
         MSHookIvar<UILabel *>(self, "_headerOverlayView").hidden = YES;
@@ -622,22 +640,6 @@ void NTFTestBanner() {
 %new
 -(void)ntfColorize {
     NTFConfig *config = [self ntfConfig];
-    self.ntfDynamicColor = nil;
-
-    if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
-        MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
-        UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
-        if (iconButton) {
-            if (![configExperimental experimentalColors]) {
-                self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
-            } else {
-                NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
-                self.ntfDynamicColor = colors.primary;
-            }
-        } else {
-            self.ntfDynamicColor = [config backgroundColor];
-        }
-    }
 
     if (!self.backgroundMaterialView) return;
     self.backgroundMaterialView.hidden = NO;
@@ -705,6 +707,7 @@ void NTFTestBanner() {
 %hook NCNotificationLongLookView
 
 %property (nonatomic, retain) UIColor *ntfDynamicColor;
+%property (nonatomic, retain) NSString *ntfId;
 
 -(void)setIcon:(UIImage *)arg1 {
     %orig;
@@ -856,6 +859,7 @@ void NTFTestBanner() {
 %hook NCNotificationShortLookView
 
 %property (nonatomic, retain) UIColor *ntfDynamicColor;
+%property (nonatomic, retain) NSString *ntfId;
 
 -(void)setIcon:(UIImage *)arg1 {
     %orig;
@@ -897,14 +901,31 @@ void NTFTestBanner() {
     }
 
     UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
-    
-    if ([configExperimental hdIcons]) {
-        if (controller && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
-            NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
-            if (req.bulletin && req.bulletin.sectionID) {
-                UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: req.bulletin.sectionID] icon: nil imageWithFormat: 0];
-                if (icon) {
-                    [iconButton setImage:icon forState:UIControlStateNormal];
+    if (controller && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
+        NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
+        if (req.bulletin && req.bulletin.sectionID) {
+            if (![self.ntfId isEqualToString:req.bulletin.sectionID]) {
+                self.ntfId = req.bulletin.sectionID;
+                self.ntfDynamicColor = nil;
+
+                if ([configExperimental hdIcons]) {
+                    UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: req.bulletin.sectionID] icon: nil imageWithFormat: 0];
+                    if (icon) {
+                        [iconButton setImage:icon forState:UIControlStateNormal];
+                    }
+                }
+
+                if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
+                    if (iconButton) {
+                        if (![configExperimental experimentalColors]) {
+                            self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+                        } else {
+                            NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
+                            self.ntfDynamicColor = colors.primary;
+                        }
+                    } else {
+                        self.ntfDynamicColor = [config backgroundColor];
+                    }
                 }
             }
         }
@@ -999,22 +1020,6 @@ void NTFTestBanner() {
 %new
 -(void)ntfColorize {
     NTFConfig *config = [self ntfConfig];
-    self.ntfDynamicColor = nil;
-
-    if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
-        MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
-        UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
-        if (iconButton) {
-            if (![configExperimental experimentalColors]) {
-                self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
-            } else {
-                NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
-                self.ntfDynamicColor = colors.primary;
-            }
-        } else {
-            self.ntfDynamicColor = [config backgroundColor];
-        }
-    }
 
     if (!self.backgroundMaterialView) return;
     [self.backgroundMaterialView ntfSetCornerRadius:[config cornerRadius]];
@@ -1093,6 +1098,7 @@ void NTFTestBanner() {
 %hook SBDashBoardAdjunctItemView
 
 %property (nonatomic, retain) UIColor *ntfDynamicColor;
+%property (nonatomic, retain) NSString *ntfId;
 
 -(void)layoutSubviews {
     %orig;

@@ -637,6 +637,7 @@
 -(void)_handleIconButton:(id)arg1 ;
 
 @property (nonatomic, retain) UIColor *ntfDynamicColor;
+@property (nonatomic, retain) NSString *ntfId;
 
 -(void)ntfColorize;
 -(void)ntfColorizeBackground:(UIColor *)color withBlurColor:(UIColor *)bgColor;
@@ -807,6 +808,7 @@
 @property (assign,nonatomic) unsigned long long messageNumberOfLines; 
 
 @property (nonatomic, retain) UIColor *ntfDynamicColor;
+@property (nonatomic, retain) NSString *ntfId;
 
 -(id)init;
 -(id)initWithFrame:(CGRect)arg1 ;
@@ -1002,6 +1004,7 @@
 -(void)setIcon:(UIImage *)arg1 ;
 
 @property (nonatomic, retain) UIColor *ntfDynamicColor;
+@property (nonatomic, retain) NSString *ntfId;
 
 -(void)ntfColorize;
 -(void)ntfColorizeBackground:(UIColor *)color withBlurColor:(UIColor *)bgColor;
