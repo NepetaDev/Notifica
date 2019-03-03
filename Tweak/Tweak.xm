@@ -306,7 +306,7 @@ void NTFTestBanner() {
             [view setCornerRadius:[config cornerRadius]];
             view.layer.cornerRadius = [config cornerRadius];
             view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y + MODERNXI_Y_OFFSET, view.frame.size.width, view.frame.size.height - MODERNXI_Y_OFFSET);
-            double alpha = (([config alpha]/2)/(count)) + ([config alpha]/2);
+            double alpha = (([config backgroundBlurAlpha]/2)/(count)) + ([config backgroundBlurAlpha]/2);
             view.alpha = alpha;
 
             for (UIView *subsubview in view.subviews) {
