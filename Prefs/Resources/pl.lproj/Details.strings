@@ -5,6 +5,7 @@
   "NOTIFICATION_OPACITY" = "Przeźroczystość";
   "CORNER_RADIUS" = "Promień zaokrąglenia rogów";
   "CENTER_CONTENTS" = "Wyśrodkowanie zawartości";
+  "ICON_CORNER_RADIUS" = "Promień zaokrąglenia ikon";
 
   "STYLE" = "Styl";
   "MODERN" = "Modern";

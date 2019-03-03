@@ -20,4 +20,5 @@
 	"MODERN" = "現代";
 	"NOTIFICATION_OPACITY" = "通知透明度";
 	"STYLE" = "風格";
+    "ICON_CORNER_RADIUS" = "图标角半径";
 }
