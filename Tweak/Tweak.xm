@@ -1435,22 +1435,23 @@ void NTFTestBanner() {
 %end
 
 %ctor{
+    if (![NSProcessInfo processInfo]) return;
     NSString *processName = [NSProcessInfo processInfo].processName;
     bool isSpringboard = [@"SpringBoard" isEqualToString:processName];
 
-    #ifndef SIMULATOR
-    HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"me.nepeta.notifica"];
-    NSMutableDictionary *colors = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/me.nepeta.notifica-colors.plist"];
-    enabled = [([file objectForKey:@"Enabled"] ?: @(YES)) boolValue];
-    #else
-    id file = nil;
-    NSMutableDictionary *colors = nil;
-    enabled = true;
-    #endif
-
-    if (!enabled) return;
-
     if (isSpringboard) {
+        #ifndef SIMULATOR
+        HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"me.nepeta.notifica"];
+        NSMutableDictionary *colors = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/me.nepeta.notifica-colors.plist"];
+        enabled = [([file objectForKey:@"Enabled"] ?: @(YES)) boolValue];
+        #else
+        id file = nil;
+        NSMutableDictionary *colors = nil;
+        enabled = true;
+        #endif
+
+        if (!enabled) return;
+
         bool showConfigurator = false;
         if (showConfigurator) {
             %init(NotificaConfigurator);
@@ -1480,16 +1481,32 @@ void NTFTestBanner() {
         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)NTFTestNotifications, (CFStringRef)@"me.nepeta.notifica/TestNotifications", NULL, kNilOptions);
         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)NTFTestBanner, (CFStringRef)@"me.nepeta.notifica/TestBanner", NULL, kNilOptions);
     } else {
-        configWidgets = [[NTFConfig alloc] initWithSub:@"Widgets" prefs:file colors:colors];
-        if (!configWidgets || ![configWidgets enabled] || ![configWidgets colorizeContent]) return;
+        if (![NSBundle mainBundle]) return;
 
         NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
         if (!infoDictionary) return;
 
         NSDictionary *extensionDictionary = infoDictionary[@"NSExtension"];
-        if (extensionDictionary && extensionDictionary[@"NSExtensionPointIdentifier"] && [extensionDictionary[@"NSExtensionPointIdentifier"] isEqualToString:@"com.apple.widget-extension"]) {
-            %init(NotificaColorizeWidgetContents);
-		}
+        if (!extensionDictionary) return;
+        if (!extensionDictionary[@"NSExtensionPointIdentifier"]) return;
+        if (![extensionDictionary[@"NSExtensionPointIdentifier"] isEqualToString:@"com.apple.widget-extension"]) return;
+
+        #ifndef SIMULATOR
+        HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"me.nepeta.notifica"];
+        NSMutableDictionary *colors = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/me.nepeta.notifica-colors.plist"];
+        enabled = [([file objectForKey:@"Enabled"] ?: @(YES)) boolValue];
+        #else
+        id file = nil;
+        NSMutableDictionary *colors = nil;
+        enabled = true;
+        #endif
+
+        if (!enabled) return;
+
+        configWidgets = [[NTFConfig alloc] initWithSub:@"Widgets" prefs:file colors:colors];
+        if (!configWidgets || ![configWidgets enabled] || ![configWidgets colorizeContent]) return;
+
+        %init(NotificaColorizeWidgetContents);
     }
 
 }
