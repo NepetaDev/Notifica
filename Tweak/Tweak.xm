@@ -213,6 +213,8 @@ void NTFTestBanner() {
             config = configWidgets;
         }
     }
+
+    if (!config || ![config enabled]) return;
     
     if (self.icons && [self.icons count] > 0 && [config hideIcon]) {
         if ([config style] == 0) self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x - 25, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width + 50, self.titleLabel.frame.size.height);
@@ -510,10 +512,6 @@ void NTFTestBanner() {
     if (![self listItem]) return;
 
     NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
 
     for (UIView *subview in self.subviews) {
@@ -585,11 +583,6 @@ void NTFTestBanner() {
 
 %new
 -(void)ntfColorizeHeader:(UIColor *)color {
-    NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
     
     // Taken from @the_casle's Nine.
@@ -612,11 +605,6 @@ void NTFTestBanner() {
 
 %new
 -(void)ntfRepositionHeader {
-    NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
     if (headerContentView.frame.origin.y != 0) return;
 
@@ -634,10 +622,6 @@ void NTFTestBanner() {
 %new
 -(void)ntfColorize {
     NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     self.ntfDynamicColor = nil;
 
     if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
@@ -732,10 +716,6 @@ void NTFTestBanner() {
     %orig;
 
     NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     NCNotificationContentView *notificationContentView = MSHookIvar<NCNotificationContentView *>(self, "_notificationContentView");
     if ([config centerText]) {
         ((UITextView *)[notificationContentView _secondaryTextView]).textAlignment = NSTextAlignmentCenter;
@@ -778,11 +758,6 @@ void NTFTestBanner() {
 
 %new
 -(void)ntfColorizeHeader:(UIColor *)color {
-    NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     MTPlatterHeaderContentView *headerContentView = MSHookIvar<MTPlatterHeaderContentView *>(self, "_headerContentView");
     
     // Taken from @the_casle's Nine.
@@ -811,10 +786,6 @@ void NTFTestBanner() {
 %new
 -(void)ntfColorize {
     NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     self.ntfDynamicColor = nil;
     MTPlatterHeaderContentView *headerContentView = MSHookIvar<MTPlatterHeaderContentView *>(self, "_headerContentView");
     NCNotificationContentView *notificationContentView = MSHookIvar<NCNotificationContentView *>(self, "_notificationContentView");
@@ -896,10 +867,6 @@ void NTFTestBanner() {
     %orig;
 
     NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     UIViewController *controller = nil;
     if (self.nextResponder.nextResponder.nextResponder) {
         controller = (UIViewController*)self.nextResponder.nextResponder.nextResponder;
@@ -988,11 +955,6 @@ void NTFTestBanner() {
 
 %new
 -(void)ntfColorizeHeader:(UIColor *)color {
-    NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
     
     // Taken from @the_casle's Nine.
@@ -1020,11 +982,6 @@ void NTFTestBanner() {
 
 %new
 -(void)ntfRepositionHeader {
-    NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
     if (headerContentView.frame.origin.y != 0) return;
 
@@ -1042,10 +999,6 @@ void NTFTestBanner() {
 %new
 -(void)ntfColorize {
     NTFConfig *config = [self ntfConfig];
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     self.ntfDynamicColor = nil;
 
     if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
@@ -1192,10 +1145,6 @@ void NTFTestBanner() {
 %new
 -(void)ntfColorize {
     NTFConfig *config = configNowPlaying;
-    if (!config || ![config enabled]) {
-        return;
-    }
-
     self.ntfDynamicColor = [config backgroundColor];
 
     [self.backgroundMaterialView ntfSetCornerRadius:[config cornerRadius]];
