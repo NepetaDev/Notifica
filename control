@@ -1,8 +1,8 @@
 Package: me.nepeta.notifica
 Name: Notifica
 Depends: mobilesubstrate, org.thebigboss.libcolorpicker, ws.hbang.common (>= 1.11), me.nepeta.libnepeta
-Conflicts: ch.mdaus.palette, com.golddavid.colorbanners2, io.ominousness.modernxi
-Version: 0.1.6
+Conflicts: ch.mdaus.palette, com.golddavid.colorbanners2, io.ominousness.modernxi, com.golddavid.colorbanners2-new
+Version: 0.1.7
 Architecture: iphoneos-arm
 Description: Notification customizer
 Maintainer: Nepeta
