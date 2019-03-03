@@ -1104,7 +1104,7 @@ void NTFTestBanner() {
     %orig;
     NTFConfig *config = configNowPlaying;
 
-    if (!config || ![config enabled] || ![config dynamicBackgroundColor]) return;
+    if (!config || ![config enabled]) return;
     if (!self.customContentView || ![self.customContentView subviews] || [[self.customContentView subviews] count] == 0) return;
     if ([self.customContentView subviews][0] && [[self.customContentView subviews][0] isKindOfClass:%c(SBDashBoardMediaControlsView)]) {
         itemViewMP = self;
@@ -1152,6 +1152,15 @@ void NTFTestBanner() {
 -(void)ntfColorize {
     NTFConfig *config = configNowPlaying;
     self.ntfDynamicColor = [config backgroundColor];
+    for (UIView *v in [self subviews]) {
+        if ([v isKindOfClass:%c(UIView)]) {
+            for (UIView *w in [v subviews]) {
+                if ([w isKindOfClass:%c(MTMaterialView)]) {
+                    w.hidden = YES;
+                }
+            }
+        }
+    }
 
     [self.backgroundMaterialView ntfSetCornerRadius:[config cornerRadius]];
     UIView *backdropView = MSHookIvar<UIView *>(self.backgroundMaterialView, "_backdropView");
