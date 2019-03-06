@@ -56,6 +56,28 @@ UIButton* ntfGetIconButtonFromHCV(MTPlatterHeaderContentView* hcv) {
     }
 }
 
+UIImage *ntfGetIconFromHCV(MTPlatterHeaderContentView* hcv) {
+    if (!hcv) return nil;
+
+    if ([hcv respondsToSelector:@selector(icon)]) {
+        return (UIImage *)[hcv icon];
+    } else if ([hcv respondsToSelector:@selector(icons)]) {
+        return (UIImage *)[hcv icons][0];
+    } else {
+        return nil;
+    }
+}
+
+void ntfSetIconForHCV(MTPlatterHeaderContentView* hcv, UIImage *icon) {
+    if (!hcv) return;
+
+    if ([hcv respondsToSelector:@selector(setIcon:)]) {
+        [hcv setIcon:icon];
+    } else if ([hcv respondsToSelector:@selector(setIcons:)]) {
+        [hcv setIcons:@[icon]];
+    }
+}
+
 static void fakeNotification(NSString *sectionID, NSDate *date, NSString *message, bool banner) {
     BBBulletin *bulletin = [[%c(BBBulletin) alloc] init];
 
@@ -534,8 +556,6 @@ void NTFTestBanner() {
     if ([config hideHeaderBackground]) {
         MSHookIvar<UILabel *>(self, "_headerOverlayView").hidden = YES;
     }
-
-	UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
     
     //if (![self.ntfId isEqualToString:self.widgetHost.appBundleID]) {
     //    self.ntfId = self.widgetHost.appBundleID;
@@ -543,18 +563,19 @@ void NTFTestBanner() {
             if (self.widgetHost && self.widgetHost.appBundleID) {
                 UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: self.widgetHost.appBundleID] icon: nil imageWithFormat: 0];
                 if (icon) {
-                    [iconButton setImage:icon forState:UIControlStateNormal];
+                    ntfSetIconForHCV(headerContentView, icon);
                 }
             }
         }
         self.ntfDynamicColor = nil;
 
         if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
-            if (iconButton) {
+            UIImage *icon = ntfGetIconFromHCV(headerContentView);
+            if (icon) {
                 if (![configExperimental experimentalColors]) {
-                    self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+                    self.ntfDynamicColor = [NEPColorUtils averageColor:icon withAlpha:1.0];
                 } else {
-                    NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
+                    NEPPalette colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
                     self.ntfDynamicColor = colors.primary;
                 }
             } else {
@@ -563,6 +584,7 @@ void NTFTestBanner() {
         }
     //}
     
+	UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
     if ([config style] == 1) {
         MSHookIvar<UILabel *>(self, "_headerOverlayView").hidden = YES;
         for (UIView *subview in self.subviews) {
@@ -796,12 +818,12 @@ void NTFTestBanner() {
     NCNotificationContentView *notificationContentView = MSHookIvar<NCNotificationContentView *>(self, "_notificationContentView");
 
     if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
-        UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
-        if (iconButton) {
+        UIImage *icon = ntfGetIconFromHCV(headerContentView);
+        if (icon) {
             if (![configExperimental experimentalColors]) {
-                self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+                self.ntfDynamicColor = [NEPColorUtils averageColor:icon withAlpha:1.0];
             } else {
-                NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
+                NEPPalette colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
                 self.ntfDynamicColor = colors.primary;
             }
         } else {
@@ -904,7 +926,6 @@ void NTFTestBanner() {
         }
     }
 
-    UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
     if (controller && [controller isKindOfClass:%c(NCNotificationShortLookViewController)] && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
         NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
         if (req.notificationIdentifier && req.bulletin && req.bulletin.sectionID) {
@@ -915,17 +936,18 @@ void NTFTestBanner() {
                 if ([configExperimental hdIcons]) {
                     UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: req.bulletin.sectionID] icon: nil imageWithFormat: 0];
                     if (icon) {
-                        [iconButton setImage:icon forState:UIControlStateNormal];
+                        ntfSetIconForHCV(headerContentView, icon);
                     }
                 }
 
                 if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
                     if (!colorCache[req.bulletin.sectionID]) {
-                        if (iconButton) {
+                        UIImage *icon = ntfGetIconFromHCV(headerContentView);
+                        if (icon) {
                             if (![configExperimental experimentalColors]) {
-                                colorCache[req.bulletin.sectionID] = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+                                colorCache[req.bulletin.sectionID] = [NEPColorUtils averageColor:icon withAlpha:1.0];
                             } else {
-                                NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
+                                NEPPalette colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
                                 colorCache[req.bulletin.sectionID] = colors.primary;
                             }
 
@@ -943,6 +965,7 @@ void NTFTestBanner() {
         }
     }
 
+    UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
     if ([config style] == 1) {
         for (UIView *subview in self.subviews) {
             if ([subview isKindOfClass:%c(UIImageView)]) {
