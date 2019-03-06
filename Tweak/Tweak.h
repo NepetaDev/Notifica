@@ -865,6 +865,7 @@
 
 @interface NCNotificationRequest : NSObject
 
+@property (nonatomic,copy,readonly) NSString *notificationIdentifier;
 @property (nonatomic,copy,readonly) BBBulletin* bulletin;
 
 @end

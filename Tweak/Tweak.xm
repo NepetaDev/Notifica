@@ -16,6 +16,8 @@ static NTFConfig *configDetails = nil;
 static NTFConfig *configNowPlaying = nil;
 static NTFConfig *configExperimental = nil;
 
+static NSMutableDictionary *colorCache = [NSMutableDictionary new];
+
 SBDashBoardAdjunctItemView *itemViewMP = nil;
 
 bool negativePull = false;
@@ -905,9 +907,9 @@ void NTFTestBanner() {
     UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
     if (controller && [controller isKindOfClass:%c(NCNotificationShortLookViewController)] && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
         NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
-        if (req.bulletin && req.bulletin.sectionID) {
-            if (![self.ntfId isEqualToString:req.bulletin.sectionID]) {
-                self.ntfId = req.bulletin.sectionID;
+        if (req.notificationIdentifier && req.bulletin && req.bulletin.sectionID) {
+            if (![self.ntfId isEqualToString:req.notificationIdentifier]) {
+                self.ntfId = req.notificationIdentifier;
                 self.ntfDynamicColor = nil;
 
                 if ([configExperimental hdIcons]) {
@@ -918,17 +920,25 @@ void NTFTestBanner() {
                 }
 
                 if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
-                    if (iconButton) {
-                        if (![configExperimental experimentalColors]) {
-                            self.ntfDynamicColor = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+                    if (!colorCache[req.bulletin.sectionID]) {
+                        if (iconButton) {
+                            if (![configExperimental experimentalColors]) {
+                                colorCache[req.bulletin.sectionID] = [NEPColorUtils averageColor:iconButton.imageView.image withAlpha:1.0];
+                            } else {
+                                NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
+                                colorCache[req.bulletin.sectionID] = colors.primary;
+                            }
+
+                            self.ntfDynamicColor = (UIColor*)colorCache[req.bulletin.sectionID];
                         } else {
-                            NEPPalette colors = [NEPColorUtils averageColors:iconButton.imageView.image withAlpha:1.0];
-                            self.ntfDynamicColor = colors.primary;
+                            self.ntfDynamicColor = [config backgroundColor];
                         }
-                    } else {
-                        self.ntfDynamicColor = [config backgroundColor];
                     }
                 }
+            }
+
+            if (colorCache[req.bulletin.sectionID]) {
+                self.ntfDynamicColor = (UIColor*)colorCache[req.bulletin.sectionID];
             }
         }
     }
