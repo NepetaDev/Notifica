@@ -15,8 +15,13 @@
     - (void)testNotifications:(id)sender;
     - (void)testBanner:(id)sender;
     - (void)saveSettings:(id)sender;
-    - (void)saveCurrentSettingsWithName:(NSString*)name;
+    - (void)shareSettings:(id)sender;
+    - (void)importSettings:(id)sender;
+    - (void)addDictionaryToSavedSettings:(NSDictionary *)dictionary;
     - (void)restoreSettingsFromDictionary:(NSDictionary*)settings;
     - (void)removeSavedSettingsAtIndex:(int)i;
+    - (void)renameSavedSettingsAtIndex:(int)i name:(NSString*)name;
     - (NSDictionary*)dictionaryWithCurrentSettingsAndName:(NSString*)name;
+    - (NSString*)serializeDictionary:(NSDictionary *)dictionary;
+    - (NSDictionary*)deserializeDictionary:(NSString *)string;
 @end

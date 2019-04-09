@@ -118,13 +118,62 @@
     return YES;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
+-(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewRowAction *renameAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Rename" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+        NSDictionary *settings = (NSDictionary*)[self.savedSettings objectAtIndex:indexPath.row];
+        UIAlertController *alert = [UIAlertController
+            alertControllerWithTitle:@"Notifica"
+            message:@"Enter name"
+            preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction * action){
+                NTFPrefsListController *parent = (NTFPrefsListController *)self.parentController;
+                [parent renameSavedSettingsAtIndex:indexPath.row name:[alert.textFields[0] text]];
+                [self refreshList];
+                [tableView reloadData];
+            }
+        ];
+        
+        UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction * action) {
+                [alert dismissViewControllerAnimated:YES completion:nil];
+            }
+        ];
+
+        [alert addAction:ok];
+        [alert addAction:cancel];
+
+        [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"name";
+            textField.keyboardType = UIKeyboardTypeDefault;
+            textField.text = settings[@"name"];
+        }];
+
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+    renameAction.backgroundColor = [UIColor colorWithRed:0.27 green:0.47 blue:0.56 alpha:1.0];
+
+    UITableViewRowAction *shareAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Share" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+        NSDictionary *settings = (NSDictionary*)[self.savedSettings objectAtIndex:indexPath.row];
+        NTFPrefsListController *parent = (NTFPrefsListController *)self.parentController;
+
+        NSArray *items = @[[parent serializeDictionary:settings]];
+
+        UIActivityViewController *controller = [[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
+        [self presentViewController:controller animated:YES completion:nil];
+    }];
+    shareAction.backgroundColor = [UIColor colorWithRed:0.11 green:0.33 blue:0.36 alpha:1.0];
+
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Delete"  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         NTFPrefsListController *parent = (NTFPrefsListController *)self.parentController;
         [parent removeSavedSettingsAtIndex:indexPath.row];
         [self refreshList];
         [tableView reloadData];
-    }
+    }];
+    deleteAction.backgroundColor = [UIColor redColor];
+
+    return @[deleteAction, shareAction, renameAction];
 }
 
 @end

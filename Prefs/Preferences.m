@@ -81,6 +81,23 @@
     [prefs setObject:savedSettings forKey:@"SavedSettings"];
 }
 
+-(void)renameSavedSettingsAtIndex:(int)i name:(NSString*)name {
+    HBPreferences *prefs = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
+    
+    NSMutableArray *savedSettings = nil;
+
+    if ([prefs objectForKey:@"SavedSettings"]) {
+        savedSettings = [[prefs objectForKey:@"SavedSettings"] mutableCopy];
+        NSMutableDictionary *dictionary = [savedSettings[i] mutableCopy];
+        dictionary[@"name"] = name;
+        savedSettings[i] = dictionary;
+    } else {
+        savedSettings = [@[] mutableCopy];
+    }
+
+    [prefs setObject:savedSettings forKey:@"SavedSettings"];
+}
+
 -(NSDictionary*)dictionaryWithCurrentSettingsAndName:(NSString*)name {
     NSMutableDictionary *settingsToSave = [NSMutableDictionary new];
 
@@ -100,6 +117,22 @@
     }
 
     return settingsToSave;
+}
+
+-(NSString*)serializeDictionary:(NSDictionary *)dictionary {
+    NSData *plist = [NSPropertyListSerialization dataWithPropertyList:dictionary
+                  format:NSPropertyListBinaryFormat_v1_0
+                 options:kNilOptions
+                   error:NULL];
+    return [plist base64EncodedStringWithOptions:kNilOptions];
+}
+
+-(NSDictionary*)deserializeDictionary:(NSString *)string {
+    NSData *plist = [[NSData alloc] initWithBase64EncodedString:string options:kNilOptions];
+    return [NSPropertyListSerialization propertyListWithData:plist
+                 options:kNilOptions
+                  format:NULL
+                   error:NULL];
 }
 
 -(void)restoreSettingsFromDictionary:(NSDictionary *)settings {
@@ -125,7 +158,7 @@
     }
 }
 
--(void)saveCurrentSettingsWithName:(NSString *)name {
+-(void)addDictionaryToSavedSettings:(NSDictionary *)dictionary {
     HBPreferences *prefs = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
 
     NSMutableArray *savedSettings = nil;
@@ -135,8 +168,64 @@
         savedSettings = [@[] mutableCopy];
     }
 
-    [savedSettings addObject:[self dictionaryWithCurrentSettingsAndName:name]];
+    [savedSettings addObject:dictionary];
     [prefs setObject:savedSettings forKey:@"SavedSettings"];
+}
+
+-(void)shareSettings:(id)sender {
+    NSArray *items = @[[self serializeDictionary:[self dictionaryWithCurrentSettingsAndName:@"current"]]];
+
+    UIActivityViewController *controller = [[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
+
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+-(void)importSettings:(id)sender {
+    UIAlertController *alert = [UIAlertController
+        alertControllerWithTitle:@"Notifica"
+        message:@"Enter data"
+        preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+        handler:^(UIAlertAction * action){
+            NSDictionary *dictionary = [self deserializeDictionary:[(UITextField *)alert.textFields[0] text]];
+            
+            NSString *info = nil;
+            if (!dictionary || ![dictionary isKindOfClass:[NSDictionary class]] || !dictionary[@"name"] || !dictionary[@"prefs"]) {
+                info = @"Couldn't import this preset.";
+            } else {
+                [self addDictionaryToSavedSettings:dictionary];
+                info = [NSString stringWithFormat:@"Imported preset: %@!\nTo activate this preset, go to \"Saved settings\" and select it.", dictionary[@"name"]];
+            }
+
+            UIAlertController* savedAlert = [UIAlertController alertControllerWithTitle:@"Notifica"
+                                        message:info
+                                        preferredStyle:UIAlertControllerStyleAlert];
+
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction * action) {}];
+            [savedAlert addAction:defaultAction];
+            [self presentViewController:savedAlert animated:YES completion:nil];
+
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        }
+    ];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
+        handler:^(UIAlertAction * action) {
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        }
+    ];
+
+    [alert addAction:ok];
+    [alert addAction:cancel];
+
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"data";
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 -(void)saveSettings:(id)sender {
@@ -149,7 +238,7 @@
         handler:^(UIAlertAction * action){
             NSString *name = [(UITextField *)alert.textFields[0] text];
 
-            [self saveCurrentSettingsWithName:name];
+            [self addDictionaryToSavedSettings:[self dictionaryWithCurrentSettingsAndName:name]];
 
             UIAlertController* savedAlert = [UIAlertController alertControllerWithTitle:@"Notifica"
                                         message:@"Saved!"

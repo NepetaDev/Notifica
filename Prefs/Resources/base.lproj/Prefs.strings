@@ -2,7 +2,7 @@
   "ENABLED" = "Enabled";
   "SETTINGS" = "Settings";
 
-  "PRESET" = "Preset";
+  "PRESET" = "Saved settings";
   "NOTIFICATION_CENTER" = "Notification center";
   "NOTIFICATIONS" = "Notifications";
   "BANNERS" = "Banners";
@@ -23,4 +23,6 @@
   "TEST_NOTIFICATIONS" = "Test notifications";
   "TEST_BANNER" = "Test banner";
   "SAVE_SETTINGS" = "Save current settings";
+  "SHARE_SETTINGS" = "Share current settings";
+  "IMPORT_SETTINGS" = "Import shared preset";
 }

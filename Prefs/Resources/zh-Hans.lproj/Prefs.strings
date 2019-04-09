@@ -19,6 +19,8 @@
 	"TEST_BANNER" = "测试横幅";
 	"TEST_NOTIFICATIONS" = "测试通知";
 	"WIDGETS" = "小部件";
-    "EXPERIMENTAL" = "实验设置";
-  	"SAVE_SETTINGS" = "Save current settings";
+  "EXPERIMENTAL" = "实验设置";
+	"SAVE_SETTINGS" = "Save current settings";
+	"SHARE_SETTINGS" = "Share current settings";
+	"IMPORT_SETTINGS" = "Import shared preset";
 }

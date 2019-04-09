@@ -23,4 +23,6 @@
   "TEST_NOTIFICATIONS" = "Test powiadomień";
   "TEST_BANNER" = "Test banerów";
   "SAVE_SETTINGS" = "Zapisz ustawienia";
+  "SHARE_SETTINGS" = "Udostępnij ustawienia";
+  "IMPORT_SETTINGS" = "Zaimportuj udostępnione ustawienia";
 }
