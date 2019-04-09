@@ -9,7 +9,8 @@
     UITableView *_tableView;
 }
 
-@property (nonatomic, retain) NSMutableArray *savedSettings;
-@property (nonatomic, retain) NSString *selectedSettings;
-
+    @property (nonatomic, retain) UIBarButtonItem *importButton;
+    @property (nonatomic, retain) NSMutableArray *savedSettings;
+    @property (nonatomic, retain) NSString *selectedSettings;
+    - (void)refreshList;
 @end

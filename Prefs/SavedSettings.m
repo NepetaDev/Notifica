@@ -15,11 +15,23 @@
         [_tableView setAllowsSelection:YES];
         [_tableView setAllowsMultipleSelection:NO];
         
+        self.importButton = [[UIBarButtonItem alloc] initWithTitle:@"Import" 
+                                    style:UIBarButtonItemStylePlain
+                                    target:self 
+                                    action:@selector(import:)];
+        self.importButton.tintColor = [UIColor colorWithRed:0.11 green:0.33 blue:0.36 alpha:1.0];
+        self.navigationItem.rightBarButtonItem = self.importButton;
+        
         if ([self respondsToSelector:@selector(setView:)])
-            [self performSelectorOnMainThread:@selector(setView:) withObject:_tableView waitUntilDone:YES];        
+            [self performSelectorOnMainThread:@selector(setView:) withObject:_tableView waitUntilDone:YES];
     }
 
     return self;
+}
+
+- (void)import:(id)sender {
+    NTFPrefsListController *parent = (NTFPrefsListController *)self.parentController;
+    [parent importSettings:self];
 }
 
 - (void)loadFromSpecifier:(PSSpecifier *)specifier {
@@ -37,6 +49,7 @@
     HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
     self.savedSettings = [file objectForKey:@"SavedSettings"];
     self.selectedSettings = [([file objectForKey:@"SelectedSettings"] ?: @"") stringValue];
+    [_tableView reloadData];
 }
 
 - (id)view {
@@ -44,6 +57,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear: animated];
     [self refreshList];
 }
 
@@ -131,7 +145,6 @@
                 NTFPrefsListController *parent = (NTFPrefsListController *)self.parentController;
                 [parent renameSavedSettingsAtIndex:indexPath.row name:[alert.textFields[0] text]];
                 [self refreshList];
-                [tableView reloadData];
             }
         ];
         
@@ -169,7 +182,6 @@
         NTFPrefsListController *parent = (NTFPrefsListController *)self.parentController;
         [parent removeSavedSettingsAtIndex:indexPath.row];
         [self refreshList];
-        [tableView reloadData];
     }];
     deleteAction.backgroundColor = [UIColor redColor];
 

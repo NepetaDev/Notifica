@@ -1,4 +1,5 @@
 #import "Preferences.h"
+#import "SavedSettings.h"
 
 @implementation NTFPrefsListController
 @synthesize respringButton;
@@ -189,13 +190,18 @@
     UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
         handler:^(UIAlertAction * action){
             NSDictionary *dictionary = [self deserializeDictionary:[(UITextField *)alert.textFields[0] text]];
+            bool comesFromList = [sender isKindOfClass:[NTFSavedSettingsListController class]];
             
             NSString *info = nil;
             if (!dictionary || ![dictionary isKindOfClass:[NSDictionary class]] || !dictionary[@"name"] || !dictionary[@"prefs"]) {
                 info = @"Couldn't import this preset.";
             } else {
                 [self addDictionaryToSavedSettings:dictionary];
-                info = [NSString stringWithFormat:@"Imported preset: %@!\nTo activate this preset, go to \"Saved settings\" and select it.", dictionary[@"name"]];
+                if (comesFromList) {
+                    info = [NSString stringWithFormat:@"Imported preset: %@!\nTo activate this preset, select it.", dictionary[@"name"]];
+                } else {
+                    info = [NSString stringWithFormat:@"Imported preset: %@!\nTo activate this preset, go to \"Saved settings\" and select it.", dictionary[@"name"]];
+                }
             }
 
             UIAlertController* savedAlert = [UIAlertController alertControllerWithTitle:@"Notifica"
@@ -206,6 +212,8 @@
             handler:^(UIAlertAction * action) {}];
             [savedAlert addAction:defaultAction];
             [self presentViewController:savedAlert animated:YES completion:nil];
+
+            if (comesFromList) [(NTFSavedSettingsListController*)sender refreshList];
 
             [alert dismissViewControllerAnimated:YES completion:nil];
         }
