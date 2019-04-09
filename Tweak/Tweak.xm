@@ -6,6 +6,7 @@
 
 static BBServer *bbServer = nil;
 
+static bool dpkgInvalid = false;
 static bool enabled = false;
 
 static NTFConfig *configNotifications = nil;
@@ -1331,6 +1332,30 @@ void NTFTestBanner() {
 
 %end
 
+%group NotificaSB
+
+%hook SpringBoard
+
+-(void)applicationDidFinishLaunching:(id)arg1 {
+    %orig;
+    if (!dpkgInvalid) return;
+    UIAlertController *alertController = [UIAlertController
+        alertControllerWithTitle:@"😡😡😡"
+        message:@"The build of Notifica you're using comes from an untrusted source. Pirate repositories can distribute malware and you will get subpar user experience using any tweaks from them.\nRemember: Notifica is free. Uninstall this build and install the proper version of Notifica from:\nhttps://repo.nepeta.me/\n(it's free, damnit, why would you pirate that!?)"
+        preferredStyle:UIAlertControllerStyleAlert
+    ];
+
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Damn!" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [((UIApplication*)self).keyWindow.rootViewController dismissViewControllerAnimated:YES completion:NULL];
+    }]];
+
+    [((UIApplication*)self).keyWindow.rootViewController presentViewController:alertController animated:YES completion:NULL];
+}
+
+%end
+
+%end
+
 %group NotificaConfigurator
 
 %hook SBCoverSheetWindow
@@ -1437,18 +1462,20 @@ void NTFTestBanner() {
     if (![NSProcessInfo processInfo]) return;
     NSString *processName = [NSProcessInfo processInfo].processName;
     bool isSpringboard = [@"SpringBoard" isEqualToString:processName];
+    dpkgInvalid = ![[NSFileManager defaultManager] fileExistsAtPath:@"/var/lib/dpkg/info/me.nepeta.notifica.list"];
 
     if (isSpringboard) {
         #ifndef SIMULATOR
         HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"me.nepeta.notifica"];
         NSMutableDictionary *colors = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/me.nepeta.notifica-colors.plist"];
-        enabled = [([file objectForKey:@"Enabled"] ?: @(YES)) boolValue];
+        enabled = [([file objectForKey:@"Enabled"] ?: @(YES)) boolValue] && !dpkgInvalid;
         #else
         id file = nil;
         NSMutableDictionary *colors = nil;
         enabled = true;
         #endif
 
+        if (dpkgInvalid) %init(NotificaSB);
         if (!enabled) return;
 
         bool showConfigurator = false;
@@ -1493,7 +1520,7 @@ void NTFTestBanner() {
         #ifndef SIMULATOR
         HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"me.nepeta.notifica"];
         NSMutableDictionary *colors = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/me.nepeta.notifica-colors.plist"];
-        enabled = [([file objectForKey:@"Enabled"] ?: @(YES)) boolValue];
+        enabled = [([file objectForKey:@"Enabled"] ?: @(YES)) boolValue] && !dpkgInvalid;
         #else
         id file = nil;
         NSMutableDictionary *colors = nil;

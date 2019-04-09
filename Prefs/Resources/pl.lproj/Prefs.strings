@@ -2,7 +2,7 @@
   "ENABLED" = "Włączony";
   "SETTINGS" = "Ustawienia";
 
-  "PRESET" = "Preset";
+  "PRESET" = "Zapisane ustawienia";
   "NOTIFICATION_CENTER" = "Centrum powiadomień";
   "NOTIFICATIONS" = "Powiadomienia";
   "BANNERS" = "Banery";
@@ -22,4 +22,5 @@
   "SUPPORT_ME" = "Wspomóź mnie!";
   "TEST_NOTIFICATIONS" = "Test powiadomień";
   "TEST_BANNER" = "Test banerów";
+  "SAVE_SETTINGS" = "Zapisz ustawienia";
 }

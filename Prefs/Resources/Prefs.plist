@@ -44,6 +44,20 @@
 		</dict>
 		<dict>
 			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>default</key>
+			<string></string>
+			<key>detail</key>
+			<string>NTFSavedSettingsListController</string>
+			<key>defaults</key>
+			<string>me.nepeta.notifica</string>
+			<key>label</key>
+			<string>PRESET</string>
+			<!-- <key>key</key>
+			<string>SelectedSettings</string> -->
+		</dict>
+		<dict>
+			<key>cell</key>
 			<string>PSLinkCell</string>
 			<key>label</key>
 			<string>NOTIFICATION_CENTER</string>
@@ -129,6 +143,14 @@
 			<string>PSButtonCell</string>
 			<key>label</key>
 			<string>RESPRING</string>
+		</dict>
+		<dict>
+			<key>action</key>
+			<string>saveSettings:</string>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>SAVE_SETTINGS</string>
 		</dict>
 		<dict>
 			<key>action</key>

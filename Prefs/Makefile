@@ -4,7 +4,7 @@ TARGET = iphone:clang:11.2:11.2
 include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = NotificaPrefs
-$(BUNDLE_NAME)_FILES = Preferences.m NTFSubPrefsListController.m
+$(BUNDLE_NAME)_FILES = Preferences.m SavedSettings.m NTFSubPrefsListController.m
 $(BUNDLE_NAME)_INSTALL_PATH = /Library/PreferenceBundles
 $(BUNDLE_NAME)_FRAMEWORKS = UIKit
 $(BUNDLE_NAME)_PRIVATE_FRAMEWORKS = Preferences
