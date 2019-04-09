@@ -81,29 +81,7 @@
     [prefs setObject:savedSettings forKey:@"SavedSettings"];
 }
 
--(void)restoreSettingsFromDictionary:(NSDictionary *)settings {
-    HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
-    for (NSString *key in [file dictionaryRepresentation]) {
-        if ([key isEqualToString:@"SavedSettings"] || [key isEqualToString:@"SelectedSettings"]) continue;
-        [file removeObjectForKey:key];
-    }
-
-    for (NSString *key in settings[@"prefs"]) {
-        [file setObject:settings[@"prefs"][key] forKey:key];
-    }
-
-    [file setObject:settings[@"name"] forKey:@"SelectedSettings"];
-
-    NSError *error;
-    if ([[NSFileManager defaultManager] isDeletableFileAtPath:COLORS_PATH]) {
-        BOOL success = [[NSFileManager defaultManager] removeItemAtPath:COLORS_PATH error:&error];
-        if (success && settings[@"colors"]) {
-            [settings[@"colors"] writeToFile:COLORS_PATH atomically:YES];
-        }
-    }
-}
-
--(void)saveCurrentSettingsWithName:(NSString *)name {
+-(NSDictionary*)dictionaryWithCurrentSettingsAndName:(NSString*)name {
     NSMutableDictionary *settingsToSave = [NSMutableDictionary new];
 
     HBPreferences *prefs = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
@@ -121,6 +99,35 @@
         settingsToSave[@"colors"] = colors;
     }
 
+    return settingsToSave;
+}
+
+-(void)restoreSettingsFromDictionary:(NSDictionary *)settings {
+    HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
+    for (NSString *key in [file dictionaryRepresentation]) {
+        if ([key isEqualToString:@"SavedSettings"] || [key isEqualToString:@"SelectedSettings"]) continue;
+        [file removeObjectForKey:key];
+    }
+
+    for (NSString *key in settings[@"prefs"]) {
+        if ([key isEqualToString:@"SavedSettings"] || [key isEqualToString:@"SelectedSettings"]) continue;
+        [file setObject:settings[@"prefs"][key] forKey:key];
+    }
+
+    [file setObject:settings[@"name"] forKey:@"SelectedSettings"];
+
+    NSError *error;
+    if ([[NSFileManager defaultManager] isDeletableFileAtPath:COLORS_PATH]) {
+        BOOL success = [[NSFileManager defaultManager] removeItemAtPath:COLORS_PATH error:&error];
+        if (success && settings[@"colors"]) {
+            [settings[@"colors"] writeToFile:COLORS_PATH atomically:YES];
+        }
+    }
+}
+
+-(void)saveCurrentSettingsWithName:(NSString *)name {
+    HBPreferences *prefs = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
+
     NSMutableArray *savedSettings = nil;
     if ([prefs objectForKey:@"SavedSettings"]) {
         savedSettings = [[prefs objectForKey:@"SavedSettings"] mutableCopy];
@@ -128,7 +135,7 @@
         savedSettings = [@[] mutableCopy];
     }
 
-    [savedSettings addObject:settingsToSave];
+    [savedSettings addObject:[self dictionaryWithCurrentSettingsAndName:name]];
     [prefs setObject:savedSettings forKey:@"SavedSettings"];
 }
 

@@ -18,4 +18,5 @@
     - (void)saveCurrentSettingsWithName:(NSString*)name;
     - (void)restoreSettingsFromDictionary:(NSDictionary*)settings;
     - (void)removeSavedSettingsAtIndex:(int)i;
+    - (NSDictionary*)dictionaryWithCurrentSettingsAndName:(NSString*)name;
 @end
