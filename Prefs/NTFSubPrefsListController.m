@@ -41,8 +41,12 @@
 }
 
 - (void)setSpecifier:(PSSpecifier *)specifier {
-	[self loadFromSpecifier:specifier];
-	[super setSpecifier:specifier];
+    [self loadFromSpecifier:specifier];
+    [super setSpecifier:specifier];
+}
+
+- (bool)shouldReloadSpecifiersOnResume {
+    return false;
 }
 
 @end
