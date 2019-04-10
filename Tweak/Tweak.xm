@@ -301,7 +301,8 @@ void NTFTestBanner() {
 
 -(void)setNotificationRequest:(NCNotificationRequest *)arg1 {
     %orig;
-    [self.view.contentView layoutSubviews];
+    [self.view.contentView setNeedsLayout];
+    [self.view.contentView layoutIfNeeded];
 }
 
 %end
