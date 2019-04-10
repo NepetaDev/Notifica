@@ -301,8 +301,7 @@ void NTFTestBanner() {
 
 -(void)setNotificationRequest:(NCNotificationRequest *)arg1 {
     %orig;
-    [self.view.contentView setNeedsLayout];
-    [self.view.contentView layoutIfNeeded];
+    [self.view.contentView ntfColorize];
 }
 
 %end
@@ -934,45 +933,6 @@ void NTFTestBanner() {
         }
     }
 
-    if (controller && [controller isKindOfClass:%c(NCNotificationShortLookViewController)] && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
-        NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
-        if (req.notificationIdentifier && req.bulletin && req.bulletin.sectionID) {
-            if (![self.ntfId isEqualToString:req.notificationIdentifier]) {
-                self.ntfId = req.notificationIdentifier;
-                self.ntfDynamicColor = nil;
-
-                if ([configExperimental hdIcons]) {
-                    UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: req.bulletin.sectionID] icon: nil imageWithFormat: 0];
-                    if (icon) {
-                        ntfSetIconForHCV(headerContentView, icon);
-                    }
-                }
-
-                if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
-                    if (!colorCache[req.bulletin.sectionID]) {
-                        UIImage *icon = ntfGetIconFromHCV(headerContentView);
-                        if (icon) {
-                            if (![configExperimental experimentalColors]) {
-                                colorCache[req.bulletin.sectionID] = [NEPColorUtils averageColor:icon withAlpha:1.0];
-                            } else {
-                                NEPPalette *colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
-                                colorCache[req.bulletin.sectionID] = colors.primary;
-                            }
-
-                            self.ntfDynamicColor = (UIColor*)colorCache[req.bulletin.sectionID];
-                        } else {
-                            self.ntfDynamicColor = [config backgroundColor];
-                        }
-                    }
-                }
-            }
-
-            if (colorCache[req.bulletin.sectionID]) {
-                self.ntfDynamicColor = (UIColor*)colorCache[req.bulletin.sectionID];
-            }
-        }
-    }
-
     UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
     if ([config style] == 1) {
         for (UIView *subview in self.subviews) {
@@ -1063,6 +1023,51 @@ void NTFTestBanner() {
 %new
 -(void)ntfColorize {
     NTFConfig *config = [self ntfConfig];
+
+    MTPlatterHeaderContentView *headerContentView = [self _headerContentView];
+    UIViewController *controller = nil;
+    if (self.nextResponder.nextResponder.nextResponder) {
+        controller = (UIViewController*)self.nextResponder.nextResponder.nextResponder;
+    }
+
+    if (controller && [controller isKindOfClass:%c(NCNotificationShortLookViewController)] && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
+        NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
+        if (req.notificationIdentifier && req.bulletin && req.bulletin.sectionID) {
+            if (![self.ntfId isEqualToString:req.notificationIdentifier]) {
+                self.ntfId = req.notificationIdentifier;
+                self.ntfDynamicColor = nil;
+
+                if ([configExperimental hdIcons]) {
+                    UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: req.bulletin.sectionID] icon: nil imageWithFormat: 0];
+                    if (icon) {
+                        ntfSetIconForHCV(headerContentView, icon);
+                    }
+                }
+
+                if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
+                    if (!colorCache[req.bulletin.sectionID]) {
+                        UIImage *icon = ntfGetIconFromHCV(headerContentView);
+                        if (icon) {
+                            if (![configExperimental experimentalColors]) {
+                                colorCache[req.bulletin.sectionID] = [NEPColorUtils averageColor:icon withAlpha:1.0];
+                            } else {
+                                NEPPalette *colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
+                                colorCache[req.bulletin.sectionID] = colors.primary;
+                            }
+
+                            self.ntfDynamicColor = (UIColor*)colorCache[req.bulletin.sectionID];
+                        } else {
+                            self.ntfDynamicColor = [config backgroundColor];
+                        }
+                    }
+                }
+            }
+
+            if (colorCache[req.bulletin.sectionID]) {
+                self.ntfDynamicColor = (UIColor*)colorCache[req.bulletin.sectionID];
+            }
+        }
+    }
 
     if (!self.backgroundMaterialView) return;
     [self.backgroundMaterialView ntfSetCornerRadius:[config cornerRadius]];
