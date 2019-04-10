@@ -1425,6 +1425,10 @@ void NTFTestBanner() {
     %orig(nil);
 }
 
+-(void)setCompositingFilter:(id)filter {
+    %orig(nil);
+}
+
 %end
 
 %hook UIView
