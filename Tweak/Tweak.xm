@@ -299,22 +299,6 @@ void NTFTestBanner() {
 
 %hook NCNotificationShortLookViewController
 
--(void)viewWillAppear:(bool)whatever {
-    %orig;
-    [self.view.contentView ntfColorize];
-}
-
--(void)viewDidAppear:(bool)whatever {
-    %orig;
-    [self.view.contentView ntfColorize];
-}
-
--(BOOL)_setNotificationRequest:(id)arg1 {
-    bool ret = %orig;
-    [self.view.contentView layoutSubviews];
-    return ret;
-}
-
 -(void)setNotificationRequest:(NCNotificationRequest *)arg1 {
     %orig;
     [self.view.contentView layoutSubviews];
