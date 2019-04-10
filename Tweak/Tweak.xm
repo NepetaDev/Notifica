@@ -587,7 +587,7 @@ void NTFTestBanner() {
                 if (![configExperimental experimentalColors]) {
                     self.ntfDynamicColor = [NEPColorUtils averageColor:icon withAlpha:1.0];
                 } else {
-                    NEPPalette colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
+                    NEPPalette *colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
                     self.ntfDynamicColor = colors.primary;
                 }
             } else {
@@ -835,7 +835,7 @@ void NTFTestBanner() {
             if (![configExperimental experimentalColors]) {
                 self.ntfDynamicColor = [NEPColorUtils averageColor:icon withAlpha:1.0];
             } else {
-                NEPPalette colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
+                NEPPalette *colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
                 self.ntfDynamicColor = colors.primary;
             }
         } else {
@@ -959,7 +959,7 @@ void NTFTestBanner() {
                             if (![configExperimental experimentalColors]) {
                                 colorCache[req.bulletin.sectionID] = [NEPColorUtils averageColor:icon withAlpha:1.0];
                             } else {
-                                NEPPalette colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
+                                NEPPalette *colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
                                 colorCache[req.bulletin.sectionID] = colors.primary;
                             }
 
@@ -1178,7 +1178,7 @@ void NTFTestBanner() {
     if (![configExperimental experimentalColors]) {
         self.ntfDynamicColor = [NEPColorUtils averageColor:mcpvc.headerView.artworkView.image withAlpha:1.0];
     } else {
-        NEPPalette colors = [NEPColorUtils averageColors:mcpvc.headerView.artworkView.image withAlpha:1.0];
+        NEPPalette *colors = [NEPColorUtils averageColors:mcpvc.headerView.artworkView.image withAlpha:1.0];
         self.ntfDynamicColor = colors.primary;
     }
     [self.backgroundMaterialView ntfColorize:self.ntfDynamicColor withBlurColor:[config blurColor] alpha:[config backgroundBlurColorAlpha]];
