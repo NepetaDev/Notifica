@@ -124,7 +124,10 @@
 }
 
 -(NSString*)serializeDictionary:(NSDictionary *)dictionary {
-    NSData *plist = [NSPropertyListSerialization dataWithPropertyList:dictionary
+    NSMutableDictionary *mutable = [dictionary mutableCopy];
+    mutable[@"id"] = BUNDLE_ID;
+
+    NSData *plist = [NSPropertyListSerialization dataWithPropertyList:mutable
                   format:NSPropertyListBinaryFormat_v1_0
                  options:kNilOptions
                    error:NULL];
@@ -172,7 +175,10 @@
         savedSettings = [@[] mutableCopy];
     }
 
-    [savedSettings addObject:dictionary];
+    NSMutableDictionary *mutable = [dictionary mutableCopy];
+    [mutable removeObjectForKey:@"id"];
+
+    [savedSettings addObject:mutable];
     [prefs setObject:savedSettings forKey:@"SavedSettings"];
 }
 
@@ -196,8 +202,12 @@
             bool comesFromList = [sender isKindOfClass:[NTFSavedSettingsListController class]];
             
             NSString *info = nil;
-            if (!dictionary || ![dictionary isKindOfClass:[NSDictionary class]] || !dictionary[@"name"] || !dictionary[@"prefs"]) {
-                info = @"Couldn't import this preset.";
+            if (!dictionary) {
+                info = @"Couldn't import this preset - text seems incomplete. Check if you've selected and copied the entire string.";
+            } else if (![dictionary isKindOfClass:[NSDictionary class]] || !dictionary[@"name"] || !dictionary[@"prefs"]) {
+                info = @"Couldn't import this preset - dictionary is malformed.";
+            } else if (dictionary[@"id"] && ![dictionary[@"id"] isEqualToString:@"xs"]) {
+                info = [NSString stringWithFormat:@"Couldn't import this preset - this preset is for another tweak (%@).", dictionary[@"id"]];
             } else {
                 [self addDictionaryToSavedSettings:dictionary];
                 if (comesFromList) {
