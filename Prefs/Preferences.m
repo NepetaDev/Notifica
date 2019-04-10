@@ -50,7 +50,10 @@
 
 - (void)resetPrefs:(id)sender {
     HBPreferences *prefs = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
-    [prefs removeAllObjects];
+    for (NSString *key in [prefs dictionaryRepresentation]) {
+        if ([key isEqualToString:@"SavedSettings"] || [key isEqualToString:@"SelectedSettings"]) continue;
+        [prefs removeObjectForKey:key];
+    }
 
     NSError *error;
     if ([[NSFileManager defaultManager] isDeletableFileAtPath:COLORS_PATH]) {
