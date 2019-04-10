@@ -410,6 +410,15 @@ void NTFTestBanner() {
         self.superview.layer.cornerRadius = [configNotifications cornerRadius];
     }
 
+    if ([configNotifications outline]) {
+        self.clippingView.layer.borderWidth = [configNotifications outlineThickness];
+        if ([configNotifications dynamicOutlineColor]) {
+            self.clippingView.layer.borderColor = dynamicColor.CGColor;
+        } else {
+            self.clippingView.layer.borderColor = [configNotifications outlineColor].CGColor;
+        }
+    }
+
     for (NCNotificationListCellActionButton *button in self.buttonsStackView.arrangedSubviews) {
         button.backgroundOverlayView.alpha = 0.0;
         UIView *view = MSHookIvar<UIView *>(button.backgroundView, "_backdropView");
