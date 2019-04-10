@@ -412,6 +412,8 @@ void NTFTestBanner() {
 
     for (NCNotificationListCellActionButton *button in self.buttonsStackView.arrangedSubviews) {
         button.backgroundOverlayView.alpha = 0.0;
+        UIView *view = MSHookIvar<UIView *>(button.backgroundView, "_backdropView");
+        view.alpha = [configNotifications backgroundBlurAlpha];
         if ([configNotifications colorizeBackground]) {
             if ([configNotifications dynamicBackgroundColor]) {
                 [button.backgroundView ntfColorize:dynamicColor withBlurColor:[configNotifications blurColor] alpha:[configNotifications backgroundBlurColorAlpha]];
