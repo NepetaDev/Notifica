@@ -18,6 +18,10 @@ static NTFConfig *configNowPlaying = nil;
 static NTFConfig *configExperimental = nil;
 
 static NSMutableDictionary *colorCache = [NSMutableDictionary new];
+static NSArray *notificationStyleBlacklist = @[
+    @"com.laughingquoll.AirPower",
+    @"com.laughingquoll.GroupAirPower"
+];
 
 SBDashBoardAdjunctItemView *itemViewMP = nil;
 
@@ -388,17 +392,26 @@ void NTFTestBanner() {
 %hook NCNotificationListCellActionButtonsView
 
 -(void)layoutSubviews {
-    if ([configNotifications enabled] && [configNotifications style] == 1) {
-        ntfMoveUpBy(-1 * MODERNXI_Y_OFFSET, self);
-    }
-
-    %orig;
-
     if (![configNotifications enabled]) return;
 
     if (!self.superview || !self.superview.superview || !self.superview.superview.superview) return;
 
     NCNotificationListCell *cell = (NCNotificationListCell *)self.superview.superview.superview;
+
+    bool disableStyle = false;
+    if (cell.contentViewController.notificationRequest) {
+        NCNotificationRequest *req = cell.contentViewController.notificationRequest;
+        if (req.notificationIdentifier && req.bulletin && req.bulletin.sectionID) {
+            disableStyle = [notificationStyleBlacklist containsObject:req.bulletin.sectionID];
+        }
+    }
+
+    if ([configNotifications style] == 1 && !disableStyle) {
+        ntfMoveUpBy(-1 * MODERNXI_Y_OFFSET, self);
+    }
+
+    %orig;
+
     UIColor *dynamicColor = cell.contentViewController.view.contentView.ntfDynamicColor;
     self.clippingView.layer.cornerRadius = [configNotifications cornerRadius];
     if (self.superview) {
@@ -932,9 +945,17 @@ void NTFTestBanner() {
             ((UILabel *)[((NCNotificationShortLookViewController *)controller) sxiNotificationCount]).textAlignment = NSTextAlignmentCenter;
         }
     }
+    
+    bool disableStyle = false;
+    if (controller && [controller isKindOfClass:%c(NCNotificationShortLookViewController)] && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
+        NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
+        if (req.notificationIdentifier && req.bulletin && req.bulletin.sectionID) {
+            disableStyle = [notificationStyleBlacklist containsObject:req.bulletin.sectionID];
+        }
+    }
 
     UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
-    if ([config style] == 1) {
+    if ([config style] == 1 && !disableStyle) {
         for (UIView *subview in self.subviews) {
             if ([subview isKindOfClass:%c(UIImageView)]) {
                 subview.hidden = YES;
