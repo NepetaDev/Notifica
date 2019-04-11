@@ -206,7 +206,7 @@
                 info = @"Couldn't import this preset - text seems incomplete. Check if you've selected and copied the entire string.";
             } else if (![dictionary isKindOfClass:[NSDictionary class]] || !dictionary[@"name"] || !dictionary[@"prefs"]) {
                 info = @"Couldn't import this preset - dictionary is malformed.";
-            } else if (dictionary[@"id"] && ![dictionary[@"id"] isEqualToString:@"xs"]) {
+            } else if (dictionary[@"id"] && ![dictionary[@"id"] isEqualToString:BUNDLE_ID]) {
                 info = [NSString stringWithFormat:@"Couldn't import this preset - this preset is for another tweak (%@).", dictionary[@"id"]];
             } else {
                 [self addDictionaryToSavedSettings:dictionary];
