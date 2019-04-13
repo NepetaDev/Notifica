@@ -192,7 +192,7 @@
 
 -(void)importSettings:(id)sender {
     UIAlertController *alert = [UIAlertController
-        alertControllerWithTitle:@"Notifica"
+        alertControllerWithTitle:TWEAK_NAME
         message:@"Enter data"
         preferredStyle:UIAlertControllerStyleAlert];
 
@@ -217,7 +217,7 @@
                 }
             }
 
-            UIAlertController* savedAlert = [UIAlertController alertControllerWithTitle:@"Notifica"
+            UIAlertController* savedAlert = [UIAlertController alertControllerWithTitle:TWEAK_NAME
                                         message:info
                                         preferredStyle:UIAlertControllerStyleAlert];
 
@@ -251,7 +251,7 @@
 
 -(void)saveSettings:(id)sender {
     UIAlertController *alert = [UIAlertController
-        alertControllerWithTitle:@"Notifica"
+        alertControllerWithTitle:TWEAK_NAME
         message:@"Enter name"
         preferredStyle:UIAlertControllerStyleAlert];
 
@@ -261,7 +261,7 @@
 
             [self addDictionaryToSavedSettings:[self dictionaryWithCurrentSettingsAndName:name]];
 
-            UIAlertController* savedAlert = [UIAlertController alertControllerWithTitle:@"Notifica"
+            UIAlertController* savedAlert = [UIAlertController alertControllerWithTitle:TWEAK_NAME
                                         message:@"Saved!"
                                         preferredStyle:UIAlertControllerStyleAlert];
 

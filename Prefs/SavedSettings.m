@@ -102,7 +102,7 @@
     NSDictionary *settings = (NSDictionary*)[self.savedSettings objectAtIndex:indexPath.row];
 
     UIAlertController *alert = [UIAlertController
-        alertControllerWithTitle:@"Notifica"
+        alertControllerWithTitle:TWEAK_NAME
         message:[NSString stringWithFormat:@"Are you sure you want to restore \"%@\" and respring?", settings[@"name"]]
         preferredStyle:UIAlertControllerStyleAlert];
 
@@ -136,7 +136,7 @@
     UITableViewRowAction *renameAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Rename" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         NSDictionary *settings = (NSDictionary*)[self.savedSettings objectAtIndex:indexPath.row];
         UIAlertController *alert = [UIAlertController
-            alertControllerWithTitle:@"Notifica"
+            alertControllerWithTitle:TWEAK_NAME
             message:@"Enter name"
             preferredStyle:UIAlertControllerStyleAlert];
 

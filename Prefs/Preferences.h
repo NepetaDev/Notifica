@@ -7,6 +7,7 @@
 
 #define COLORS_PATH @"/var/mobile/Library/Preferences/me.nepeta.notifica-colors.plist"
 #define BUNDLE_ID @"me.nepeta.notifica"
+#define TWEAK_NAME @"Notifica"
 
 @interface NTFPrefsListController : HBRootListController
     @property (nonatomic, retain) UIBarButtonItem *respringButton;
