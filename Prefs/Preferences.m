@@ -183,11 +183,40 @@
 }
 
 -(void)shareSettings:(id)sender {
-    NSArray *items = @[[self serializeDictionary:[self dictionaryWithCurrentSettingsAndName:@"current"]]];
+    UIAlertController *alert = [UIAlertController
+        alertControllerWithTitle:TWEAK_NAME
+        message:@"Enter name"
+        preferredStyle:UIAlertControllerStyleAlert];
 
-    UIActivityViewController *controller = [[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+        handler:^(UIAlertAction * action){
+            NSString *name = [(UITextField *)alert.textFields[0] text];
 
-    [self presentViewController:controller animated:YES completion:nil];
+            NSArray *items = @[[self serializeDictionary:[self dictionaryWithCurrentSettingsAndName:name]]];
+
+            UIActivityViewController *controller = [[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
+
+            [self presentViewController:controller animated:YES completion:nil];
+
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        }
+    ];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
+        handler:^(UIAlertAction * action) {
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        }
+    ];
+
+    [alert addAction:ok];
+    [alert addAction:cancel];
+
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"name";
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 -(void)importSettings:(id)sender {
