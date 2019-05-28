@@ -20,7 +20,8 @@ static NTFConfig *configExperimental = nil;
 static NSMutableDictionary *colorCache = [NSMutableDictionary new];
 static NSArray *notificationStyleBlacklist = @[
     @"com.laughingquoll.AirPower",
-    @"com.laughingquoll.GroupAirPower"
+    @"com.laughingquoll.GroupAirPower",
+    @"com.laughingquoll.maple"
 ];
 
 SBDashBoardAdjunctItemView *itemViewMP = nil;
@@ -402,7 +403,12 @@ void NTFTestBanner() {
     if (cell.contentViewController.notificationRequest) {
         NCNotificationRequest *req = cell.contentViewController.notificationRequest;
         if (req.notificationIdentifier && req.bulletin && req.bulletin.sectionID) {
-            disableStyle = [notificationStyleBlacklist containsObject:req.bulletin.sectionID];
+            for (NSString *bundleId in notificationStyleBlacklist) {
+                if ([req.bulletin.sectionID hasPrefix:bundleId]) {
+                    disableStyle = true;
+                    break;
+                }
+            }
         }
     }
 
@@ -950,7 +956,12 @@ void NTFTestBanner() {
     if (controller && [controller isKindOfClass:%c(NCNotificationShortLookViewController)] && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
         NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
         if (req.notificationIdentifier && req.bulletin && req.bulletin.sectionID) {
-            disableStyle = [notificationStyleBlacklist containsObject:req.bulletin.sectionID];
+            for (NSString *bundleId in notificationStyleBlacklist) {
+                if ([req.bulletin.sectionID hasPrefix:bundleId]) {
+                    disableStyle = true;
+                    break;
+                }
+            }
         }
     }
 
