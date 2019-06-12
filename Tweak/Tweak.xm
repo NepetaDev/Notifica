@@ -1400,24 +1400,6 @@ void NTFTestBanner() {
 
 %end
 
-%group NotificaConfigurator
-
-%hook SBCoverSheetWindow
-
-%property (nonatomic, retain) UIWindow *ntfConfigurator;
-
--(id)initWithScreen:(id)arg1 debugName:(id)arg2 {
-    id orig = %orig;
-
-    self.ntfConfigurator = [[NTFConfigurator alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    return orig;
-}
-
-%end
-
-%end
-
 %group NotificaNotificationTest
 
 %hook BBServer
@@ -1525,11 +1507,7 @@ void NTFTestBanner() {
 
         if (dpkgInvalid) %init(NotificaSB);
         if (!enabled) return;
-
-        bool showConfigurator = false;
-        if (showConfigurator) {
-            %init(NotificaConfigurator);
-        }
+        
         NSLog(@"[Notifica] init");
 
         if (enabled) {

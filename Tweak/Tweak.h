@@ -9,7 +9,6 @@
 #endif
 
 #import "NTFConfig.h"
-#import "NTFConfigurator.h"
 
 @interface UIView(Notifica)
 
@@ -971,8 +970,6 @@
 @end
 
 @interface SBCoverSheetWindow : UIWindow
-
-@property (nonatomic, retain) UIWindow *ntfConfigurator;
 
 -(id)_initWithScreen:(id)arg1 layoutStrategy:(id)arg2 debugName:(id)arg3 rootViewController:(id)arg4 scene:(id)arg5 ;
 -(id)initWithScreen:(id)arg1 debugName:(id)arg2 rootViewController:(id)arg3 ;
