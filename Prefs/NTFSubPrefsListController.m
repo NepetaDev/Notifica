@@ -45,8 +45,13 @@
     [super setSpecifier:specifier];
 }
 
-- (bool)shouldReloadSpecifiersOnResume {
-    return false;
+- (void)reloadSpecifiers {
+    [self loadFromSpecifier:[self specifier]];
+}
+
+- (void)viewDidAppear:(bool)arg1 {
+    [self reloadSpecifiers];
+    [self reload];
 }
 
 @end

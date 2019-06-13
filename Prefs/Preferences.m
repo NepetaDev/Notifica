@@ -144,6 +144,53 @@
                    error:NULL];
 }
 
+-(void)copyX:(NSString *)x toY:(NSString *)y {
+    HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
+    for (NSString *key in [file dictionaryRepresentation]) {
+        if (![key hasPrefix:y]) continue;
+        [file removeObjectForKey:key];
+    }
+
+    for (NSString *key in [file dictionaryRepresentation]) {
+        if (![key hasPrefix:x]) continue;
+        [file setObject:[file objectForKey:key] forKey:[key stringByReplacingOccurrencesOfString:x withString:y]];
+    }
+
+    [file synchronize];
+
+    NSMutableDictionary *colors = [[[NSDictionary alloc] initWithContentsOfFile:COLORS_PATH] mutableCopy];
+    for (NSString *key in colors) {
+        if (![key hasPrefix:y]) continue;
+        [colors removeObjectForKey:key];
+    }
+
+    for (NSString *key in colors) {
+        if (![key hasPrefix:x]) continue;
+        colors[[key stringByReplacingOccurrencesOfString:x withString:y]] = colors[key];
+    }
+
+    [colors writeToFile:COLORS_PATH atomically:YES];
+    [self reloadSpecifiers];
+    [self reload];
+
+    UIAlertController* savedAlert = [UIAlertController alertControllerWithTitle:TWEAK_NAME
+                                message:@"Saved!\n\nYou may have to respring for the settings to show up, I don't know why it's like that, don't report that to me, cya."
+                                preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+    handler:^(UIAlertAction * action) {}];
+    [savedAlert addAction:defaultAction];
+    [self presentViewController:savedAlert animated:YES completion:nil];
+}
+
+-(void)copyNtoB:(id)sender {
+    [self copyX:@"NTFNotifications" toY:@"NTFBanners"];
+}
+
+-(void)copyBtoN:(id)sender {
+    [self copyX:@"NTFBanners" toY:@"NTFNotifications"];
+}
+
 -(void)restoreSettingsFromDictionary:(NSDictionary *)settings {
     HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:BUNDLE_ID];
     for (NSString *key in [file dictionaryRepresentation]) {

@@ -186,6 +186,22 @@
 		</dict>
 		<dict>
 			<key>action</key>
+			<string>copyNtoB:</string>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>COPY_N_TO_B</string>
+		</dict>
+		<dict>
+			<key>action</key>
+			<string>copyBtoN:</string>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>COPY_B_TO_N</string>
+		</dict>
+		<dict>
+			<key>action</key>
 			<string>resetPrefs:</string>
 			<key>cell</key>
 			<string>PSButtonCell</string>

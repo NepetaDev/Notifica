@@ -18,6 +18,9 @@
     - (void)saveSettings:(id)sender;
     - (void)shareSettings:(id)sender;
     - (void)importSettings:(id)sender;
+    - (void)copyNtoB:(id)sender;
+    - (void)copyBtoN:(id)sender;
+    - (void)copyX:(NSString *)x toY:(NSString *)y;
     - (void)addDictionaryToSavedSettings:(NSDictionary *)dictionary;
     - (void)restoreSettingsFromDictionary:(NSDictionary*)settings;
     - (void)removeSavedSettingsAtIndex:(int)i;

@@ -25,4 +25,6 @@
   "SAVE_SETTINGS" = "Save current settings";
   "SHARE_SETTINGS" = "Share current settings";
   "IMPORT_SETTINGS" = "Import shared preset";
+  "COPY_N_TO_B" = "Copy: Notifications -> Banners";
+  "COPY_B_TO_N" = "Copy: Banners -> Notifications";
 }
