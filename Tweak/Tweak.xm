@@ -1025,6 +1025,10 @@ void NTFTestBanner() {
     }
     if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
     [self ntfHideStuff];
+
+    if ([[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) {
+        [self ntfColorize];
+    }
 }
 
 %new
