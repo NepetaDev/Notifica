@@ -6,6 +6,6 @@
 +(instancetype)sharedInstance;
 -(id)init;
 -(UIImage *)getIcon:(NSString *)bundleIdentifier;
--(UIColor *)getDynamicColorForBundleIdentifier:(NSString *)bundleIdentifier withIconImage:(UIImage*)image mode:(NSInteger)mode;
+-(void)getDynamicColorForBundleIdentifier:(NSString *)bundleIdentifier withIconImage:(UIImage*)image mode:(NSInteger)mode completion:(void (^)(UIColor *))completionHandler;
 
 @end

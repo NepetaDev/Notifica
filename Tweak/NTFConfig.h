@@ -1,7 +1,5 @@
-#ifndef SIMULATOR
 #import <Cephei/HBPreferences.h>
 #import <libcolorpicker.h>
-#endif
 
 @interface NTFConfig : NSObject
 

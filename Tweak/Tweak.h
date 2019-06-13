@@ -2,11 +2,7 @@
 #import <UIKit/UIKit.h>
 #import <UIKit/UIControl.h>
 #import <dlfcn.h>
-
-
-#ifndef SIMULATOR
 #import <Cephei/HBPreferences.h>
-#endif
 
 #import "NTFConfig.h"
 

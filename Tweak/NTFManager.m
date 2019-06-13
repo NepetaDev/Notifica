@@ -1,4 +1,6 @@
 #import <Nepeta/NEPColorUtils.h>
+#import <MediaPlayer/MPArtworkColorAnalyzer.h>
+#import <MediaPlayer/MPArtworkColorAnalysis.h>
 #import "NTFManager.h"
 #import "IconHeaders.h"
 
@@ -46,27 +48,37 @@
     return image ?: [UIImage new];
 }
 
--(UIColor *)getDynamicColorForBundleIdentifier:(NSString *)bundleIdentifier withIconImage:(UIImage*)image mode:(NSInteger)mode {
-    if (!image) return nil;
-    if (self.colorCache[mode][bundleIdentifier]) return [self.colorCache[mode][bundleIdentifier] copy];
-    
-    UIColor *color = [UIColor blackColor];
-    NEPPalette *colors = nil;
-
-    switch (mode) {
-        case 0:
-            color = [NEPColorUtils averageColor:image withAlpha:1.0];
-            break;
-        case 1:
-            colors = [NEPColorUtils averageColors:image withAlpha:1.0];
-            color = colors.primary;
-            break;
-        default:
-            break;
+-(void)getDynamicColorForBundleIdentifier:(NSString *)bundleIdentifier withIconImage:(UIImage*)image mode:(NSInteger)mode completion:(void (^)(UIColor *))completionHandler {
+    if (!image) return;
+    if (self.colorCache[mode][bundleIdentifier]) {
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            completionHandler([self.colorCache[mode][bundleIdentifier] copy]);
+        });
     }
 
-    self.colorCache[mode][bundleIdentifier] = [color copy];
-    return [color copy];
+    if (mode == 0) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            UIColor *color = [NEPColorUtils averageColor:image withAlpha:1.0];
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                self.colorCache[mode][bundleIdentifier] = [color copy];
+                completionHandler([color copy]);
+            });
+        });
+    } else if (mode == 1) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NEPPalette *colors = [NEPColorUtils averageColors:image withAlpha:1.0];
+            UIColor *color = colors.primary;
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                self.colorCache[mode][bundleIdentifier] = [color copy];
+                completionHandler([color copy]);
+            });
+        });
+    } else {
+        MPArtworkColorAnalyzer *colorAnalyzer = [[MPArtworkColorAnalyzer alloc] initWithImage:image algorithm:0];
+        [colorAnalyzer analyzeWithCompletionHandler:^(MPArtworkColorAnalyzer *analyzer, MPArtworkColorAnalysis *analysis) {
+            self.colorCache[mode][bundleIdentifier] = [analysis.backgroundColor copy];
+        }];
+    }
 }
 
 @end

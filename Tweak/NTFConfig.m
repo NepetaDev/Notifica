@@ -4,8 +4,6 @@
 
 -(NTFConfig *)initWithSub:(NSString*)sub prefs:(id)prefs colors:(NSDictionary*)colors {
     NSMutableDictionary *dict = [NSMutableDictionary new];
-    
-    #ifndef SIMULATOR
     NSString *prefix = [@"NTF" stringByAppendingString:sub];
 
     for (NSString *key in [((HBPreferences *)prefs).dictionaryRepresentation allKeys]) {
@@ -19,7 +17,6 @@
             dict[[key stringByReplacingOccurrencesOfString:prefix withString:@""]] = [colors objectForKey:key];
         }
     }
-    #endif
     
     if ([sub isEqualToString:@"NowPlaying"]) {
         self.enabled = [([dict objectForKey:@"Enabled"] ?: @(NO)) boolValue];
@@ -64,19 +61,11 @@
     if (contentTextColor == 1) self.dynamicContentColor = true;
     if (outline == 1) self.dynamicOutlineColor = true;
 
-    #ifndef SIMULATOR
     self.backgroundColor = LCPParseColorString([dict objectForKey:@"CustomBackgroundColor"], @"#000000:1.0");
     self.backgroundGradientColor = LCPParseColorString([dict objectForKey:@"BackgroundGradientColor"], @"#ffffff:1.0");
     self.headerColor = LCPParseColorString([dict objectForKey:@"CustomHeaderTextColor"], @"#ffffff:1.0");
     self.contentColor = LCPParseColorString([dict objectForKey:@"CustomContentTextColor"], @"#ffffff:1.0");
     self.outlineColor = LCPParseColorString([dict objectForKey:@"CustomOutlineColor"], @"#000000:1.0");
-    #else
-    self.backgroundColor = [UIColor blackColor];
-    self.backgroundGradientColor = [UIColor whiteColor];
-    self.headerColor = [UIColor blackColor];
-    self.contentColor = [UIColor blackColor];
-    self.outlineColor = [UIColor blackColor];
-    #endif
 
     int _backgroundBlurMode = [([dict objectForKey:@"BackgroundBlurMode"] ?: @(1)) intValue];
     self.backgroundBlurColorAlpha = [([dict objectForKey:@"BackgroundBlurColorAlpha"] ?: @(0.4)) doubleValue];

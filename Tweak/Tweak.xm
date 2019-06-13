@@ -597,7 +597,11 @@ void NTFTestBanner() {
         if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
             UIImage *icon = ntfGetIconFromHCV(headerContentView);
             if (icon) {
-                self.ntfDynamicColor = [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:self.listItem.widgetIdentifier withIconImage:icon mode:[configExperimental experimentalColors]];
+                [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:self.listItem.widgetIdentifier withIconImage:icon mode:[configExperimental experimentalColors]
+                completion:^(UIColor *color) {
+                    self.ntfDynamicColor = [color copy];
+                    [self ntfColorize];
+                }];
                 self.ntfId = self.listItem.widgetIdentifier;
             }
         }
@@ -845,7 +849,11 @@ void NTFTestBanner() {
         NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
         if (req.bulletin && req.bulletin.sectionID) {
             UIImage *icon = ntfGetIconFromHCV(headerContentView);
-            self.ntfDynamicColor = [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]];
+            [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]
+            completion:^(UIColor *color) {
+                self.ntfDynamicColor = [color copy];
+                [self ntfColorize];
+            }];
         }
     }
 
@@ -985,7 +993,7 @@ void NTFTestBanner() {
 
         [self ntfRepositionHeader];
     }
-	if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
+    if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
     [self ntfHideStuff];
     [self ntfColorize];
 }
@@ -1070,7 +1078,11 @@ void NTFTestBanner() {
 
                 if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
                     UIImage *icon = ntfGetIconFromHCV(headerContentView);
-                    self.ntfDynamicColor = [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]];
+                    [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]
+                    completion:^(UIColor *color) {
+                        self.ntfDynamicColor = [color copy];
+                        [self ntfColorize];
+                    }];
                 }
             }
         }
@@ -1380,11 +1392,6 @@ void NTFTestBanner() {
 %hook BBServer
 -(id)initWithQueue:(id)arg1 {
     bbServer = %orig;
-    #ifdef SIMULATOR
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        NTFTestNotifications();
-    });
-    #endif
     return bbServer;
 }
 
@@ -1470,16 +1477,10 @@ void NTFTestBanner() {
     dpkgInvalid = ![[NSFileManager defaultManager] fileExistsAtPath:@"/var/lib/dpkg/info/me.nepeta.notifica.list"];
 
     if (isSpringboard) {
-        #ifndef SIMULATOR
         HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"me.nepeta.notifica"];
         NSMutableDictionary *colors = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/me.nepeta.notifica-colors.plist"];
         enabled = [([file objectForKey:@"Enabled"] ?: @(YES)) boolValue] && !dpkgInvalid;
-        #else
-        id file = nil;
-        NSMutableDictionary *colors = nil;
-        enabled = true;
-        #endif
-
+        
         if (dpkgInvalid) %init(NotificaSB);
         if (!enabled) return;
         
@@ -1518,15 +1519,9 @@ void NTFTestBanner() {
         if (!extensionDictionary[@"NSExtensionPointIdentifier"]) return;
         if (![extensionDictionary[@"NSExtensionPointIdentifier"] isEqualToString:@"com.apple.widget-extension"]) return;
 
-        #ifndef SIMULATOR
         HBPreferences *file = [[HBPreferences alloc] initWithIdentifier:@"me.nepeta.notifica"];
         NSMutableDictionary *colors = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/me.nepeta.notifica-colors.plist"];
         enabled = [([file objectForKey:@"Enabled"] ?: @(YES)) boolValue] && !dpkgInvalid;
-        #else
-        id file = nil;
-        NSMutableDictionary *colors = nil;
-        enabled = true;
-        #endif
 
         if (!enabled) return;
 
