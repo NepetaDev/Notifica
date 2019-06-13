@@ -648,9 +648,8 @@ void NTFTestBanner() {
 
         [self ntfRepositionHeader];
     }
-	if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
+    if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
     [self ntfHideStuff];
-    [self ntfColorize];
 }
 
 %new
@@ -807,10 +806,9 @@ void NTFTestBanner() {
         }
     }
 
-	iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
+    iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
 
     [self ntfHideStuff];
-    [self ntfColorize];
 }
 
 %new

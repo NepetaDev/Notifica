@@ -48,7 +48,7 @@
 @property (nonatomic,assign) int iconCornerRadius;
 
 @property (nonatomic,assign) bool idleTimerDisabled;
-@property (nonatomic,assign) bool experimentalColors;
+@property (nonatomic,assign) NSInteger experimentalColors;
 @property (nonatomic,assign) bool hdIcons;
 @property (nonatomic,assign) bool disableIconShadow;
 
