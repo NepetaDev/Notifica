@@ -1177,3 +1177,7 @@
 -(SBApplication *)applicationWithBundleIdentifier:(id)arg1;
 
 @end
+
+@interface NSData (NSData_MD5)
+- (NSString *)md5;
+@end

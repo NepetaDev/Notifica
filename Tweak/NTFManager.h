@@ -2,6 +2,7 @@
 
 @property (nonatomic, retain) NSMutableArray *colorCache;
 @property (nonatomic, retain) NSMutableDictionary *iconStore;
+@property (nonatomic, retain) UIColor *lastArtworkColor;
 
 +(instancetype)sharedInstance;
 -(id)init;

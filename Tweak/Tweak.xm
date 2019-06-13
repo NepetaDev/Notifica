@@ -1,7 +1,9 @@
 #import "Tweak.h"
 #import <Nepeta/NEPColorUtils.h>
-#import "NTFManager.h"
+#import <MediaRemote/MediaRemote.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import <CommonCrypto/CommonDigest.h>
+#import "NTFManager.h"
 
 #define MODERNXI_Y_OFFSET 27
 
@@ -138,6 +140,23 @@ void NTFTestNotifications() {
 void NTFTestBanner() {
     fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test banner!", true);
 }
+
+@implementation NSData (NSData_MD5)
+- (NSString *)md5 {
+    // Create byte array of unsigned chars
+    unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
+        
+    // Create 16 byte MD5 hash value, store in buffer
+    CC_MD5(self.bytes, (unsigned int)self.length, md5Buffer);
+        
+    // Convert unsigned char buffer to NSString of hex values
+    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) 
+        [output appendFormat:@"%02x",md5Buffer[i]];
+    
+    return output;
+}
+@end
 
 %group Notifica
 
@@ -1160,13 +1179,28 @@ void NTFTestBanner() {
 
 %group NotificaNowPlaying
 
-%hook MediaControlsHeaderView
+%hook SBMediaController
 
--(void)layoutSubviews {
+-(void)setNowPlayingInfo:(id)arg1 {
     %orig;
-    if (self.superview && self.superview.superview && self.superview.superview.superview && [self.superview.superview.superview isKindOfClass:%c(SBDashBoardMediaControlsView)] && itemViewMP) {
-        [itemViewMP ntfReadjustColorBasedOnArtwork];
-    }
+    MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
+        NSDictionary *dict = (__bridge NSDictionary *)information;
+
+        if (dict && dict[(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtworkData]) {
+            NSData *data = [dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtworkData];
+            NSString *key = [NSString stringWithFormat:@"mediaPlayerMD5_%@", [data md5]];
+            UIImage *image = [UIImage imageWithData:data];
+
+            [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:key withIconImage:image mode:[configExperimental experimentalColors]
+            completion:^(UIColor *color) {
+                [NTFManager sharedInstance].lastArtworkColor = [color copy];
+                if (itemViewMP) {
+                    itemViewMP.ntfDynamicColor = [color copy];
+                    [itemViewMP ntfReadjustColorBasedOnArtwork];
+                }
+            }];
+        }
+    });
 }
 
 %end
@@ -1197,19 +1231,13 @@ void NTFTestBanner() {
 %new
 -(void)ntfReadjustColorBasedOnArtwork {
     NTFConfig *config = configNowPlaying;
-    if (!config || ![config enabled] || ![config dynamicBackgroundColor]) return;
+    if (!config || ![config enabled] || ![config colorizeBackground] || ![config dynamicBackgroundColor] || !self.ntfDynamicColor) return;
     if (!self.customContentView || ![self.customContentView subviews] || [[self.customContentView subviews] count] == 0) return;
 
     SBDashBoardMediaControlsView *view = (SBDashBoardMediaControlsView *)[self.customContentView subviews][0];
     MediaControlsPanelViewController *mcpvc = MSHookIvar<MediaControlsPanelViewController *>(view.nextResponder, "_mediaControlsPanelViewController");
     if (!mcpvc || !mcpvc.headerView || !mcpvc.headerView.artworkView || !mcpvc.headerView.artworkView.image || !self.backgroundMaterialView) return;
     
-    if (![configExperimental experimentalColors]) {
-        self.ntfDynamicColor = [NEPColorUtils averageColor:mcpvc.headerView.artworkView.image withAlpha:1.0];
-    } else {
-        NEPPalette *colors = [NEPColorUtils averageColors:mcpvc.headerView.artworkView.image withAlpha:1.0];
-        self.ntfDynamicColor = colors.primary;
-    }
     [self.backgroundMaterialView ntfColorize:self.ntfDynamicColor withBlurColor:[config blurColor] alpha:[config backgroundBlurColorAlpha]];
 
     if ([config outline]) {
@@ -1227,7 +1255,7 @@ void NTFTestBanner() {
 %new
 -(void)ntfColorize {
     NTFConfig *config = configNowPlaying;
-    self.ntfDynamicColor = [config backgroundColor];
+    self.ntfDynamicColor = [NTFManager sharedInstance].lastArtworkColor;
     for (UIView *v in [self subviews]) {
         if ([v isKindOfClass:%c(UIView)]) {
             for (UIView *w in [v subviews]) {
