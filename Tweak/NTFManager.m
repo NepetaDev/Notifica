@@ -54,6 +54,7 @@
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             completionHandler([self.colorCache[mode][bundleIdentifier] copy]);
         });
+        return;
     }
 
     if (mode == 0) {
