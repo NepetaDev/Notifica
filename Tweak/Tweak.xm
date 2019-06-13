@@ -628,10 +628,12 @@ void NTFTestBanner() {
         if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
             UIImage *icon = ntfGetIconFromHCV(headerContentView);
             if (icon) {
+                __weak WGWidgetPlatterView *weakSelf = self;
                 [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:self.listItem.widgetIdentifier withIconImage:icon mode:[configExperimental experimentalColors]
                 completion:^(UIColor *color) {
-                    self.ntfDynamicColor = [color copy];
-                    [self ntfColorize];
+                    if (!weakSelf) return;
+                    weakSelf.ntfDynamicColor = [color copy];
+                    [weakSelf ntfColorize];
                 }];
                 self.ntfId = self.listItem.widgetIdentifier;
             }
@@ -829,6 +831,7 @@ void NTFTestBanner() {
     iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
 
     [self ntfHideStuff];
+    [self ntfColorize];
 }
 
 %new
@@ -879,11 +882,15 @@ void NTFTestBanner() {
         NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
         if (req.bulletin && req.bulletin.sectionID) {
             UIImage *icon = ntfGetIconFromHCV(headerContentView);
-            [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]
-            completion:^(UIColor *color) {
-                self.ntfDynamicColor = [color copy];
-                [self ntfColorize];
-            }];
+            if (icon) {
+                __weak NCNotificationLongLookView *weakSelf = self;
+                [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]
+                completion:^(UIColor *color) {
+                    if (!weakSelf) return;
+                    weakSelf.ntfDynamicColor = [color copy];
+                    [weakSelf ntfColorize];
+                }];
+            }
         }
     }
 
@@ -1024,11 +1031,19 @@ void NTFTestBanner() {
         [self ntfRepositionHeader];
     }
     if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
-    [self ntfHideStuff];
 
     if ([[[self _viewControllerForAncestor] delegate] isKindOfClass:%c(SBNotificationBannerDestination)]) {
         [self ntfColorize];
     }
+
+    if ([config colorizeHeader]) {
+        if ([config dynamicHeaderColor]) {
+            [self ntfColorizeHeader:self.ntfDynamicColor];
+        } else {
+            [self ntfColorizeHeader:[config headerColor]];
+        }
+    }
+    [self ntfHideStuff];
 }
 
 %new
@@ -1111,11 +1126,15 @@ void NTFTestBanner() {
 
                 if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
                     UIImage *icon = ntfGetIconFromHCV(headerContentView);
-                    [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]
-                    completion:^(UIColor *color) {
-                        self.ntfDynamicColor = [color copy];
-                        [self ntfColorize];
-                    }];
+                    if (icon) {
+                        __weak NCNotificationShortLookView *weakSelf = self;
+                        [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]
+                        completion:^(UIColor *color) {
+                            if (!weakSelf) return;
+                            weakSelf.ntfDynamicColor = [color copy];
+                            [weakSelf ntfColorize];
+                        }];
+                    }
                 }
             }
         }
