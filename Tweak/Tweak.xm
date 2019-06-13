@@ -1,5 +1,6 @@
 #import "Tweak.h"
 #import <Nepeta/NEPColorUtils.h>
+#import "NTFManager.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 #define MODERNXI_Y_OFFSET 27
@@ -583,8 +584,7 @@ void NTFTestBanner() {
         MSHookIvar<UILabel *>(self, "_headerOverlayView").hidden = YES;
     }
     
-    //if (![self.ntfId isEqualToString:self.widgetHost.appBundleID]) {
-    //    self.ntfId = self.widgetHost.appBundleID;
+    if (![self.ntfId isEqualToString:self.listItem.widgetIdentifier]) {
         if ([configExperimental hdIcons]) {
             if (self.widgetHost && self.widgetHost.appBundleID) {
                 UIImage *icon = [[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier: self.widgetHost.appBundleID] icon: nil imageWithFormat: 0];
@@ -593,24 +593,17 @@ void NTFTestBanner() {
                 }
             }
         }
-        self.ntfDynamicColor = nil;
 
         if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
             UIImage *icon = ntfGetIconFromHCV(headerContentView);
             if (icon) {
-                if (![configExperimental experimentalColors]) {
-                    self.ntfDynamicColor = [NEPColorUtils averageColor:icon withAlpha:1.0];
-                } else {
-                    NEPPalette *colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
-                    self.ntfDynamicColor = colors.primary;
-                }
-            } else {
-                self.ntfDynamicColor = [config backgroundColor];
+                self.ntfDynamicColor = [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:self.listItem.widgetIdentifier withIconImage:icon mode:[configExperimental experimentalColors]];
+                self.ntfId = self.listItem.widgetIdentifier;
             }
         }
-    //}
+    }
     
-	UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
+    UIButton *iconButton = ntfGetIconButtonFromHCV(headerContentView);
     if ([config style] == 1) {
         MSHookIvar<UILabel *>(self, "_headerOverlayView").hidden = YES;
         for (UIView *subview in self.subviews) {
@@ -843,17 +836,16 @@ void NTFTestBanner() {
     MTPlatterHeaderContentView *headerContentView = MSHookIvar<MTPlatterHeaderContentView *>(self, "_headerContentView");
     NCNotificationContentView *notificationContentView = MSHookIvar<NCNotificationContentView *>(self, "_notificationContentView");
 
-    if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
-        UIImage *icon = ntfGetIconFromHCV(headerContentView);
-        if (icon) {
-            if (![configExperimental experimentalColors]) {
-                self.ntfDynamicColor = [NEPColorUtils averageColor:icon withAlpha:1.0];
-            } else {
-                NEPPalette *colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
-                self.ntfDynamicColor = colors.primary;
-            }
-        } else {
-            self.ntfDynamicColor = [config backgroundColor];
+    UIViewController *controller = nil;
+    if (self.nextResponder.nextResponder.nextResponder) {
+        controller = (UIViewController*)self.nextResponder.nextResponder.nextResponder;
+    }
+
+    if (([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) && controller && [controller isKindOfClass:%c(NCNotificationShortLookViewController)] && ((NCNotificationShortLookViewController *)controller).notificationRequest) {
+        NCNotificationRequest *req = ((NCNotificationShortLookViewController *)controller).notificationRequest;
+        if (req.bulletin && req.bulletin.sectionID) {
+            UIImage *icon = ntfGetIconFromHCV(headerContentView);
+            self.ntfDynamicColor = [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]];
         }
     }
 
@@ -1077,26 +1069,9 @@ void NTFTestBanner() {
                 }
 
                 if ([config dynamicBackgroundColor] || [config dynamicHeaderColor] || [config dynamicContentColor]) {
-                    if (!colorCache[req.bulletin.sectionID]) {
-                        UIImage *icon = ntfGetIconFromHCV(headerContentView);
-                        if (icon) {
-                            if (![configExperimental experimentalColors]) {
-                                colorCache[req.bulletin.sectionID] = [NEPColorUtils averageColor:icon withAlpha:1.0];
-                            } else {
-                                NEPPalette *colors = [NEPColorUtils averageColors:icon withAlpha:1.0];
-                                colorCache[req.bulletin.sectionID] = colors.primary;
-                            }
-
-                            self.ntfDynamicColor = (UIColor*)colorCache[req.bulletin.sectionID];
-                        } else {
-                            self.ntfDynamicColor = [config backgroundColor];
-                        }
-                    }
+                    UIImage *icon = ntfGetIconFromHCV(headerContentView);
+                    self.ntfDynamicColor = [[NTFManager sharedInstance] getDynamicColorForBundleIdentifier:req.bulletin.sectionID withIconImage:icon mode:[configExperimental experimentalColors]];
                 }
-            }
-
-            if (colorCache[req.bulletin.sectionID]) {
-                self.ntfDynamicColor = (UIColor*)colorCache[req.bulletin.sectionID];
             }
         }
     }

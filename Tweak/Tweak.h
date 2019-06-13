@@ -586,6 +586,12 @@
 
 @end
 
+@interface WGWidgetListItemViewController : UIViewController
+                                         //@synthesize pendingSize=_pendingSize - In the implementation block
+@property (nonatomic,copy,readonly) NSString* widgetIdentifier;                                                                          //@synthesize widgetIdentifier=_widgetIdentifier - In the implementation block
+
+@end
+
 @interface WGWidgetPlatterView : MTTitledPlatterView {
 
 	UIView* _compatibilityDarkeningView;
@@ -598,7 +604,7 @@
 }
 
 @property (assign,nonatomic) WGWidgetHostingViewController* widgetHost;                      //@synthesize widgetHost=_widgetHost - In the implementation block
-//@property (assign,nonatomic,__weak) WGWidgetListItemViewController* listItem;                       //@synthesize listItem=_listItem - In the implementation block
+@property (assign,nonatomic) WGWidgetListItemViewController* listItem;                       //@synthesize listItem=_listItem - In the implementation block
 @property (nonatomic,readonly) UIButton* showMoreButton; 
 @property (assign,getter=isShowingMoreContent,nonatomic) bool showingMoreContent;                   //@synthesize showingMoreContent=_showingMoreContent - In the implementation block
 @property (assign,getter=isShowMoreButtonVisible,nonatomic) bool showMoreButtonVisible; 
@@ -630,7 +636,6 @@
 -(bool)isShowingMoreContent;
 -(bool)isShowMoreButtonVisible;
 -(bool)isAddWidgetButtonVisible;
--(void)setListItem:(id)arg1 ;
 -(void)setBackgroundBlurred:(bool)arg1 ;
 -(void)_configureHeaderContentView;
 -(void)_handleIconButton:(id)arg1 ;

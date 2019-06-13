@@ -10,7 +10,7 @@ endif
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = Notifica
-$(TWEAK_NAME)_FILES = Tweak.xm NTFConfig.m
+$(TWEAK_NAME)_FILES = Tweak.xm NTFConfig.m NTFManager.m
 $(TWEAK_NAME)_FRAMEWORKS += QuartzCore
 
 ifeq ($(SIMULATOR),1)
