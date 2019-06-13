@@ -61,8 +61,12 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             UIColor *color = [NEPColorUtils averageColor:image withAlpha:1.0];
             dispatch_async(dispatch_get_main_queue(), ^(void) {
-                self.colorCache[mode][bundleIdentifier] = [color copy];
-                completionHandler([color copy]);
+                if (!self.colorCache[mode][bundleIdentifier]) {
+                    self.colorCache[mode][bundleIdentifier] = [color copy];
+                    completionHandler([color copy]);
+                } else {
+                    completionHandler([self.colorCache[mode][bundleIdentifier] copy]);
+                }
             });
         });
     } else if (mode == 1) {
