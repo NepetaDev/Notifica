@@ -669,6 +669,7 @@ void NTFTestBanner() {
     }
     if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
     [self ntfHideStuff];
+    [self ntfColorize];
 }
 
 %new
