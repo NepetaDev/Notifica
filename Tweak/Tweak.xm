@@ -372,10 +372,22 @@ void NTFTestBanner() {
 
 -(void)layoutSubviews {
     %orig;
-    [self.contentViewController.view.contentView ntfColorize];
 
     if ([configNotifications style] == 1) {
-        [self.contentViewController.view.contentView ntfRepositionHeader];
+        bool disableStyle = false;
+        if (self.contentViewController && self.contentViewController.notificationRequest) {
+            NCNotificationRequest *req = self.contentViewController.notificationRequest;
+            if (req.notificationIdentifier && req.bulletin && req.bulletin.sectionID) {
+                for (NSString *bundleId in notificationStyleBlacklist) {
+                    if ([req.bulletin.sectionID hasPrefix:bundleId]) {
+                        disableStyle = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!disableStyle) [self.contentViewController.view.contentView ntfRepositionHeader];
     }
 
     self.alpha = [configNotifications alpha];
@@ -995,7 +1007,6 @@ void NTFTestBanner() {
     }
     if (iconButton) iconButton.imageView.layer.cornerRadius = [[self ntfConfig] iconCornerRadius];
     [self ntfHideStuff];
-    [self ntfColorize];
 }
 
 %new
