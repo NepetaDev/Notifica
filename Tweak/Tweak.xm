@@ -1068,6 +1068,10 @@ void NTFTestBanner() {
     [headerContentView setTintColor:color];
     [[headerContentView _dateLabel] setTextColor:color];
     [[headerContentView _titleLabel] setTextColor:color];
+
+    if ([self respondsToSelector:@selector(nanoAppLabel)]) {
+        [self.nanoAppLabel setTextColor:color];
+    }
 }
 
 %new
@@ -1081,6 +1085,14 @@ void NTFTestBanner() {
         [[[[[self _notificationContentView] _summaryLabel] contentLabel] layer] setFilters:nil];
         [[[self _notificationContentView] _summaryLabel] setTextColor:color];
         [[[[self _notificationContentView] _summaryLabel] contentLabel] setTextColor:color];
+    }
+
+    if ([self respondsToSelector:@selector(nanoTitleLabel)]) {
+        [self.nanoTitleLabel setTextColor:color];
+    }
+
+    if ([self respondsToSelector:@selector(nanoTextLabel)]) {
+        [self.nanoTextLabel setTextColor:color];
     }
 }
 
@@ -1150,6 +1162,14 @@ void NTFTestBanner() {
         } else {
             [self.backgroundMaterialView ntfColorize:[config backgroundColor] withBlurColor:[config blurColor] alpha:[config backgroundBlurColorAlpha]];
         }
+
+        if ([self respondsToSelector:@selector(nanoView)]) {
+            if ([config dynamicBackgroundColor]) {
+                [self.nanoView setBackgroundColor:self.ntfDynamicColor];
+            } else {
+                [self.nanoView setBackgroundColor:[config backgroundColor]];
+            }
+        }
     }
 
     if ([config outline]) {
@@ -1158,6 +1178,15 @@ void NTFTestBanner() {
             self.backgroundMaterialView.layer.borderColor = self.ntfDynamicColor.CGColor;
         } else {
             self.backgroundMaterialView.layer.borderColor = [config outlineColor].CGColor;
+        }
+
+        if ([self respondsToSelector:@selector(nanoView)]) {
+            self.nanoView.layer.borderWidth = [config outlineThickness];
+            if ([config dynamicOutlineColor]) {
+                self.nanoView.layer.borderColor = self.ntfDynamicColor.CGColor;
+            } else {
+                self.nanoView.layer.borderColor = [config outlineColor].CGColor;
+            }
         }
     }
 

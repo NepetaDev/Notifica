@@ -810,6 +810,12 @@
 @property (nonatomic, retain) UIColor *ntfDynamicColor;
 @property (nonatomic, retain) NSString *ntfId;
 
+@property (nonatomic, retain) UIView *nanoView;
+@property (nonatomic, retain) UIImageView *nanoIconView;
+@property (nonatomic, retain) UILabel *nanoAppLabel;
+@property (nonatomic, retain) UILabel *nanoTitleLabel;
+@property (nonatomic, retain) UILabel *nanoTextLabel;
+
 -(id)init;
 -(id)initWithFrame:(CGRect)arg1 ;
 -(void)layoutSubviews;
