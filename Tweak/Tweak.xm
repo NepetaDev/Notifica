@@ -221,7 +221,7 @@ void NTFTestBanner() {
 
     self.ntfGradientLayer = [CAGradientLayer layer];
 
-    self.ntfGradientLayer.frame = view.bounds;
+    self.ntfGradientLayer.frame = CGRectMake(0,0,view.bounds.size.width,view.bounds.size.height+300);
     self.ntfGradientLayer.startPoint = CGPointMake(0.0, 0.5);
     self.ntfGradientLayer.endPoint = CGPointMake(1.0, 0.5);
     self.ntfGradientLayer.colors = @[(id)[UIColor clearColor].CGColor, (id)color.CGColor];
