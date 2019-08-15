@@ -1265,6 +1265,8 @@ void NTFTestBanner() {
 
 -(void)layoutSubviews {
     %orig;
+    if (![self respondsToSelector:@selector(customContentView)]) return; //iOS 12.2 "compatibility"
+
     NTFConfig *config = configNowPlaying;
 
     if (!config || ![config enabled]) return;
@@ -1283,6 +1285,8 @@ void NTFTestBanner() {
 
 %new
 -(void)ntfReadjustColorBasedOnArtwork {
+    if (![self respondsToSelector:@selector(customContentView)]) return; //iOS 12.2 "compatibility"
+    
     NTFConfig *config = configNowPlaying;
     if (!config || ![config enabled] || ![config colorizeBackground] || ![config dynamicBackgroundColor] || !self.ntfDynamicColor) return;
     if (!self.customContentView || ![self.customContentView subviews] || [[self.customContentView subviews] count] == 0) return;
@@ -1307,6 +1311,8 @@ void NTFTestBanner() {
 
 %new
 -(void)ntfColorize {
+    if (![self respondsToSelector:@selector(customContentView)]) return; //iOS 12.2 "compatibility"
+    
     NTFConfig *config = configNowPlaying;
     self.ntfDynamicColor = [NTFManager sharedInstance].lastArtworkColor;
     for (UIView *v in [self subviews]) {
